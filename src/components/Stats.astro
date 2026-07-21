@@ -1,0 +1,19 @@
+---
+
+---
+
+<section class="container-wide py-16 sm:py-20">
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+    {[
+      { number: '+20', label: 'Proyectos Completados' },
+      { number: '+100', label: 'Fotografías Documentadas' },
+      { number: '6', label: 'Categorías Diferentes' },
+      { number: '100%', label: 'Dedicación Artesanal' },
+    ].map((stat) => (
+      <div class="text-center p-6 rounded-2xl bg-surface-50 border border-surface-200">
+        <p class="text-3xl sm:text-4xl font-bold text-brand-600 mb-1">{stat.number}</p>
+        <p class="text-sm text-surface-600">{stat.label}</p>
+      </div>
+    ))}
+  </div>
+</section>

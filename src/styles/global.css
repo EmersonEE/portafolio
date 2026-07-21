@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-white text-surface-900 font-sans;
+  }
+
+  ::selection {
+    @apply bg-brand-500/20 text-brand-800;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand-500 rounded;
+  }
+}
+
+@layer components {
+  .container-wide {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .container-narrow {
+    @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .link-underline {
+    @apply relative inline-block;
+  }
+
+  .link-underline::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-full h-[1px] bg-current origin-right scale-x-0 transition-transform duration-300;
+  }
+
+  .link-underline:hover::after {
+    @apply origin-left scale-x-100;
+  }
+
+  .glass {
+    @apply bg-white/80 backdrop-blur-xl border-b border-surface-200;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-artesanal {
+    @apply badge bg-amber-50 text-amber-800 border border-amber-200;
+  }
+
+  .badge-profesional {
+    @apply badge bg-blue-50 text-blue-800 border border-blue-200;
+  }
+
+  .badge-personal {
+    @apply badge bg-purple-50 text-purple-800 border border-purple-200;
+  }
+
+  .badge-cliente {
+    @apply badge bg-emerald-50 text-emerald-800 border border-emerald-200;
+  }
+
+  .badge-universitario {
+    @apply badge bg-rose-50 text-rose-800 border border-rose-200;
+  }
+
+  .badge-prototipo {
+    @apply badge bg-cyan-50 text-cyan-800 border border-cyan-200;
+  }
+
+  .badge-completado {
+    @apply badge bg-emerald-50 text-emerald-700 border-emerald-200;
+  }
+
+  .badge-en-progreso {
+    @apply badge bg-amber-50 text-amber-700 border-amber-200;
+  }
+
+  .badge-pausado {
+    @apply badge bg-gray-50 text-gray-600 border-gray-200;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .masonry-grid {
+    column-count: 1;
+    column-gap: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .masonry-grid {
+      column-count: 2;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .masonry-grid {
+      column-count: 3;
+    }
+  }
+
+  .masonry-item {
+    break-inside: avoid;
+    margin-bottom: 1.5rem;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pswp--custom {
+  --pswp-bg: #000;
+  --pswp-placeholder-bg: #111;
+}
+
+.pswp__img {
+  object-fit: contain;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}

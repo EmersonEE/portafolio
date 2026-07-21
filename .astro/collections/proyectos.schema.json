@@ -1,0 +1,160 @@
+{
+  "$ref": "#/definitions/proyectos",
+  "definitions": {
+    "proyectos": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "artesanal",
+            "profesional",
+            "personal",
+            "cliente",
+            "universitario",
+            "prototipo"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "completado",
+            "en-progreso",
+            "pausado"
+          ]
+        },
+        "client": {
+          "type": "string"
+        },
+        "featuredImage": {
+          "type": "string"
+        },
+        "specifications": {
+          "type": "object",
+          "properties": {
+            "layers": {
+              "type": "number"
+            },
+            "dimensions": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            },
+            "software": {
+              "type": "string"
+            },
+            "microcontroller": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "layers",
+            "dimensions",
+            "type",
+            "software"
+          ],
+          "additionalProperties": false
+        },
+        "technologies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "src": {
+                "type": "string"
+              },
+              "alt": {
+                "type": "string"
+              },
+              "phase": {
+                "type": "string",
+                "enum": [
+                  "diseno",
+                  "fabricacion",
+                  "final",
+                  "pruebas"
+                ]
+              }
+            },
+            "required": [
+              "src",
+              "alt",
+              "phase"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "challenges": {
+          "type": "string"
+        },
+        "solutions": {
+          "type": "string"
+        },
+        "timeframe": {
+          "type": "string"
+        },
+        "objective": {
+          "type": "string"
+        },
+        "beforeAfter": {
+          "type": "object",
+          "properties": {
+            "before": {
+              "type": "string"
+            },
+            "after": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "before",
+            "after"
+          ],
+          "additionalProperties": false
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "description",
+        "date",
+        "category",
+        "status",
+        "featuredImage",
+        "specifications",
+        "technologies",
+        "tags",
+        "images"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

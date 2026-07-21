@@ -1,0 +1,52 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+export interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+}
+
+const { title, description, image } = Astro.props;
+const siteTitle = 'PCB Portfolio | Diseño y Fabricación de Circuitos Impresos';
+---
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <title>{title ? `${title} | PCB Portfolio` : siteTitle}</title>
+    <meta name="description" content={description || 'Portafolio profesional de diseño y fabricación de PCBs. Circuitos impresos artesanales y profesionales.'} />
+
+    <meta property="og:title" content={title || siteTitle} />
+    <meta property="og:description" content={description || 'Portafolio profesional de diseño y fabricación de PCBs.'} />
+    {image && <meta property="og:image" content={image} />}
+    <meta property="og:type" content="website" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title || siteTitle} />
+    <meta name="twitter:description" content={description || 'Portafolio profesional de diseño y fabricación de PCBs.'} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <script
+      is:inline
+      data-goatcounter="https://pcb-portfolio.goatcounter.com/count"
+      async
+      src="//gc.zgo.at/count.js"
+    ></script>
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <Header />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

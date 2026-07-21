@@ -1,0 +1,247 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+
+export interface Props {
+  project: CollectionEntry<'proyectos'>;
+}
+
+const { project } = Astro.props;
+const { data } = project;
+
+const categoryLabels: Record<string, string> = {
+  artesanal: 'Artesanal',
+  profesional: 'Profesional',
+  personal: 'Personal',
+  cliente: 'Cliente',
+  universitario: 'Universitario',
+  prototipo: 'Prototipo',
+};
+---
+
+<BaseLayout
+  title={data.title}
+  description={data.description}
+  image={data.featuredImage}
+>
+  <article class="container-narrow py-16 lg:py-24">
+    <header class="mb-12">
+      <div class="flex flex-wrap items-center gap-3 mb-4">
+        <span class={`badge-${data.category}`}>
+          {categoryLabels[data.category]}
+        </span>
+        <span class={`badge-${data.status}`}>
+          {data.status === 'completado' ? 'Completado' : data.status === 'en-progreso' ? 'En Progreso' : 'Pausado'}
+        </span>
+        <time class="text-sm text-surface-500" datetime={data.date}>
+          {new Date(data.date).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </time>
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
+        {data.title}
+      </h1>
+      <p class="text-xl text-surface-600 leading-relaxed max-w-3xl">
+        {data.description}
+      </p>
+    </header>
+
+    <section class="mb-16">
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 p-6 bg-surface-50 rounded-2xl">
+        <div>
+          <p class="text-xs font-medium text-surface-500 uppercase tracking-wider mb-1">Capas</p>
+          <p class="font-semibold">{data.specifications.layers}</p>
+        </div>
+        <div>
+          <p class="text-xs font-medium text-surface-500 uppercase tracking-wider mb-1">Dimensiones</p>
+          <p class="font-semibold">{data.specifications.dimensions}</p>
+        </div>
+        <div>
+          <p class="text-xs font-medium text-surface-500 uppercase tracking-wider mb-1">Tipo</p>
+          <p class="font-semibold">{data.specifications.type}</p>
+        </div>
+        <div>
+          <p class="text-xs font-medium text-surface-500 uppercase tracking-wider mb-1">Software</p>
+          <p class="font-semibold">{data.specifications.software}</p>
+        </div>
+        {data.specifications.microcontroller && (
+          <div>
+            <p class="text-xs font-medium text-surface-500 uppercase tracking-wider mb-1">Microcontrolador</p>
+            <p class="font-semibold">{data.specifications.microcontroller}</p>
+          </div>
+        )}
+        {data.client && (
+          <div>
+            <p class="text-xs font-medium text-surface-500 uppercase tracking-wider mb-1">Cliente</p>
+            <p class="font-semibold">{data.client}</p>
+          </div>
+        )}
+      </div>
+    </section>
+
+    <div class="prose prose-lg max-w-none mb-16">
+      <slot />
+    </div>
+
+    {data.objective && (
+      <section class="mb-16">
+        <h2 class="text-2xl font-bold mb-4">Objetivo</h2>
+        <p class="text-surface-700 leading-relaxed">{data.objective}</p>
+      </section>
+    )}
+
+    {data.images && data.images.length > 0 && (
+      <section class="mb-16">
+        <h2 class="text-2xl font-bold mb-6">Galería del Proceso</h2>
+        <div class="masonry-grid" id="gallery">
+          {data.images.map((img) => (
+            <a
+              href={img.src}
+              class="masonry-item group block rounded-xl overflow-hidden bg-surface-100 cursor-pointer"
+              data-pswp-width="1920"
+              data-pswp-height="1440"
+              target="_blank"
+            >
+              <img
+                src={img.src}
+                alt={img.alt}
+                class="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+              <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <p class="text-white text-sm font-medium">{img.alt}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {data.beforeAfter && (
+      <section class="mb-16">
+        <h2 class="text-2xl font-bold mb-6">Comparación</h2>
+        <div class="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-surface-100" id="image-compare">
+          <img
+            src={data.beforeAfter.before}
+            alt="Antes"
+            class="absolute inset-0 w-full h-full object-cover"
+          />
+          <div class="absolute inset-0 w-1/2 overflow-hidden" id="compare-after">
+            <img
+              src={data.beforeAfter.after}
+              alt="Después"
+              class="absolute inset-0 w-full h-full object-cover"
+              style="width: 200%"
+            />
+          </div>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value="50"
+            class="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-10"
+            id="compare-slider"
+          />
+          <div
+            class="absolute top-0 bottom-0 w-0.5 bg-white shadow-lg z-[5]"
+            id="compare-line"
+            style="left: 50%"
+          >
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white shadow-lg flex items-center justify-center">
+              <svg class="w-4 h-4 text-surface-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M8 7l-4 4m0 0l4 4m-4-4h16" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M16 7l4 4m0 0l-4 4m4-4H8" />
+              </svg>
+            </div>
+          </div>
+          {data.beforeAfter.label && (
+            <>
+              <span class="absolute bottom-4 left-4 px-2 py-1 bg-black/60 text-white text-xs rounded z-[5]">Antes</span>
+              <span class="absolute bottom-4 right-4 px-2 py-1 bg-black/60 text-white text-xs rounded z-[5]">Después</span>
+            </>
+          )}
+        </div>
+        <script>
+          const slider = document.getElementById('compare-slider');
+          const afterEl = document.getElementById('compare-after');
+          const lineEl = document.getElementById('compare-line');
+
+          if (slider && afterEl && lineEl) {
+            const update = () => {
+              const val = slider.value;
+              afterEl.style.width = val + '%';
+              lineEl.style.left = val + '%';
+            };
+            slider.addEventListener('input', update);
+            update();
+          }
+        </script>
+      </section>
+    )}
+
+    {data.challenges && (
+      <section class="mb-8">
+        <h2 class="text-2xl font-bold mb-4">Retos</h2>
+        <p class="text-surface-700 leading-relaxed">{data.challenges}</p>
+      </section>
+    )}
+
+    {data.solutions && (
+      <section class="mb-16">
+        <h2 class="text-2xl font-bold mb-4">Soluciones</h2>
+        <p class="text-surface-700 leading-relaxed">{data.solutions}</p>
+      </section>
+    )}
+
+    {data.timeframe && (
+      <div class="flex items-center gap-2 text-surface-600 mb-8">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>Tiempo de fabricación: <strong class="text-surface-900">{data.timeframe}</strong></span>
+      </div>
+    )}
+
+    {data.technologies && data.technologies.length > 0 && (
+      <section class="mb-16">
+        <h2 class="text-2xl font-bold mb-4">Tecnologías</h2>
+        <div class="flex flex-wrap gap-2">
+          {data.technologies.map((tech) => (
+            <span class="px-3 py-1.5 bg-surface-100 text-surface-700 rounded-full text-sm font-medium">
+              {tech}
+            </span>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {data.tags && data.tags.length > 0 && (
+      <section class="mb-16">
+        <h2 class="text-2xl font-bold mb-4">Etiquetas</h2>
+        <div class="flex flex-wrap gap-2">
+          {data.tags.map((tag) => (
+            <a
+              href={`/?tag=${encodeURIComponent(tag)}`}
+              class="px-3 py-1.5 bg-brand-50 text-brand-700 rounded-full text-sm font-medium hover:bg-brand-100 transition-colors"
+            >
+              #{tag}
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <nav class="border-t border-surface-200 pt-8 mt-16">
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 text-surface-600 hover:text-surface-900 transition-colors font-medium"
+      >
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+        </svg>
+        Volver a proyectos
+      </a>
+    </nav>
+  </article>
+</BaseLayout>

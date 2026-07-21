@@ -1,0 +1,120 @@
+---
+
+---
+
+<form class="space-y-6" id="contact-form" action="/api/contact" method="POST">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <div>
+      <label for="name" class="block text-sm font-medium text-surface-700 mb-1.5">
+        Nombre completo
+      </label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        required
+        class="w-full px-4 py-3 bg-white border border-surface-200 rounded-xl text-surface-900 placeholder-surface-400 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-400 transition-all duration-200"
+        placeholder="Tu nombre"
+      />
+    </div>
+    <div>
+      <label for="email" class="block text-sm font-medium text-surface-700 mb-1.5">
+        Correo electrónico
+      </label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        class="w-full px-4 py-3 bg-white border border-surface-200 rounded-xl text-surface-900 placeholder-surface-400 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-400 transition-all duration-200"
+        placeholder="tu@correo.com"
+      />
+    </div>
+  </div>
+
+  <div>
+    <label for="service" class="block text-sm font-medium text-surface-700 mb-1.5">
+      Servicio de interés
+    </label>
+    <select
+      id="service"
+      name="service"
+      class="w-full px-4 py-3 bg-white border border-surface-200 rounded-xl text-surface-900 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-400 transition-all duration-200"
+    >
+      <option value="">Selecciona un servicio</option>
+      <option value="diseno-electronico">Diseño Electrónico</option>
+      <option value="diseno-pcb">Diseño PCB</option>
+      <option value="fabricacion-artesanal">Fabricación Artesanal</option>
+      <option value="ensamblado">Ensamblado</option>
+      <option value="soldadura-smd">Soldadura SMD</option>
+      <option value="firmware">Desarrollo de Firmware</option>
+      <option value="prototipado">Prototipado Rápido</option>
+      <option value="consultoria">Consultoría</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="message" class="block text-sm font-medium text-surface-700 mb-1.5">
+      Mensaje
+    </label>
+    <textarea
+      id="message"
+      name="message"
+      rows="5"
+      required
+      class="w-full px-4 py-3 bg-white border border-surface-200 rounded-xl text-surface-900 placeholder-surface-400 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-400 transition-all duration-200 resize-y min-h-[120px]"
+      placeholder="Cuéntame sobre tu proyecto..."
+    ></textarea>
+  </div>
+
+  <button
+    type="submit"
+    class="w-full sm:w-auto px-8 py-3.5 bg-surface-900 text-white font-medium rounded-xl hover:bg-surface-800 transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+    id="submit-btn"
+  >
+    Enviar Mensaje
+  </button>
+
+  <div id="form-message" class="hidden"></div>
+</form>
+
+<script>
+  const form = document.getElementById('contact-form');
+  const submitBtn = document.getElementById('submit-btn');
+  const formMessage = document.getElementById('form-message');
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando...';
+
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+
+        if (response.ok) {
+          formMessage.className = 'p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl text-sm';
+          formMessage.textContent = 'Mensaje enviado con éxito. Te responderé a la brevedad.';
+          formMessage.classList.remove('hidden');
+          form.reset();
+        } else {
+          throw new Error('Error al enviar');
+        }
+      } catch {
+        formMessage.className = 'p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl text-sm';
+        formMessage.textContent = 'Hubo un error al enviar el mensaje. Por favor intenta de nuevo o escríbeme directamente al correo.';
+        formMessage.classList.remove('hidden');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Enviar Mensaje';
+      }
+    });
+  }
+</script>

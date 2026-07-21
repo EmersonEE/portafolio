@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Página no encontrada">
+  <div class="container-narrow py-32 text-center">
+    <div class="w-20 h-20 mx-auto mb-6 rounded-2xl bg-surface-100 flex items-center justify-center">
+      <svg class="w-10 h-10 text-surface-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    </div>
+    <h1 class="text-4xl font-bold text-surface-900 mb-3">Página no encontrada</h1>
+    <p class="text-lg text-surface-500 mb-8">La página que buscas no existe o ha sido movida.</p>
+    <a href="/" class="inline-flex items-center gap-2 px-6 py-3 bg-surface-900 text-white font-medium rounded-xl hover:bg-surface-800 transition-all">
+      Volver al Inicio
+    </a>
+  </div>
+</BaseLayout>

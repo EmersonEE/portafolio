@@ -1,0 +1,65 @@
+---
+
+---
+
+<section class="relative pt-28 sm:pt-36 pb-16 sm:pb-24 overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-b from-brand-50/50 to-white pointer-events-none" />
+  <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-brand-100/30 to-transparent rounded-full blur-3xl pointer-events-none" />
+  <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-amber-100/20 to-transparent rounded-full blur-3xl pointer-events-none" />
+
+  <div class="container-wide relative">
+    <div class="max-w-3xl">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-50 border border-brand-200 rounded-full text-sm font-medium text-brand-700 mb-6">
+        <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse" />
+        Ingeniero Electrónico · Diseñador PCB
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-surface-900 leading-[1.1] mb-6">
+        Diseño y Fabricación
+        <span class="text-brand-600">Profesional</span>
+        <br />de Circuitos Impresos
+      </h1>
+
+      <p class="text-lg sm:text-xl text-surface-600 leading-relaxed max-w-2xl mb-8">
+        Más de 20 proyectos documentados. Desde PCBs artesanales hasta
+        fabricación profesional. Cada placa cuenta una historia de ingeniería,
+        precisión y dedicación.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4">
+        <a
+          href="/#proyectos"
+          class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-surface-900 text-white font-medium rounded-xl hover:bg-surface-800 transition-all duration-200 active:scale-[0.98]"
+        >
+          Ver Proyectos
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </a>
+        <a
+          href="/contacto"
+          class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-surface-100 text-surface-700 font-medium rounded-xl hover:bg-surface-200 transition-all duration-200 active:scale-[0.98]"
+        >
+          Solicitar Presupuesto
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+        </a>
+      </div>
+
+      <div class="flex items-center gap-8 mt-10 pt-10 border-t border-surface-200">
+        <div class="flex -space-x-2">
+          {[1, 2, 3, 4].map((i) => (
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 border-2 border-white flex items-center justify-center text-[10px] font-bold text-white shadow-sm">
+              {['K', 'E', 'A', 'P'][i - 1]}
+            </div>
+          ))}
+        </div>
+        <div>
+          <p class="text-sm font-semibold text-surface-900">+20 Proyectos Completados</p>
+          <p class="text-sm text-surface-500">Artesanales y profesionales</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
