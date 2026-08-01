@@ -7,6 +7,7 @@ import ProjectGrid from '../components/ProjectGrid.astro';
 import { getCollection } from 'astro:content';
 
 const allProjects = await getCollection('proyectos');
+const baseUrl = import.meta.env.BASE_URL;
 
 allProjects.sort(
   (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
@@ -19,7 +20,7 @@ const allCategories = [
 ---
 
 <BaseLayout
-  title="PCB Portfolio - Diseño y Fabricación de Circuitos Impresos"
+  title="Emerson Pérez - Diseño y Fabricación de Circuitos Impresos"
   description="Portafolio profesional de diseño y fabricación de PCBs. Más de 20 proyectos documentados con más de 100 fotografías del proceso completo."
 >
   <Hero />
@@ -35,7 +36,7 @@ const allCategories = [
         </p>
       </div>
       <a
-        href="/contacto"
+        href={`${baseUrl}contacto`}
         class="inline-flex items-center gap-2 text-sm font-medium text-brand-600 hover:text-brand-700 transition-colors shrink-0"
       >
         ¿Tienes un proyecto en mente?
@@ -62,12 +63,12 @@ const allCategories = [
             style="animation: scaleIn 0.3s ease-out forwards"
           >
             <a
-              href={`/proyectos/${project.slug}/`}
+              href={`${baseUrl}proyectos/${project.slug}/`}
               class="group block rounded-2xl overflow-hidden bg-white border border-surface-200 hover:border-brand-200 shadow-sm hover:shadow-lg transition-all duration-500"
             >
               <div class="relative aspect-[4/3] overflow-hidden bg-surface-100">
                 <img
-                  src={data.featuredImage}
+                  src={`${baseUrl}${data.featuredImage.replace(/^\//, '')}`}
                   alt={data.title}
                   class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
                   loading="lazy"
@@ -134,7 +135,7 @@ const allCategories = [
         Trabajemos juntos para hacer realidad tu diseño electrónico.
       </p>
       <a
-        href="/contacto"
+        href={`${baseUrl}contacto`}
         class="inline-flex items-center gap-2 px-8 py-3.5 bg-surface-900 text-white font-medium rounded-xl hover:bg-surface-800 transition-all duration-200 active:scale-[0.98]"
       >
         Solicitar Presupuesto

@@ -1,10 +1,11 @@
 ---
+const baseUrl = import.meta.env.BASE_URL;
 const navItems = [
-  { label: 'Inicio', href: '/' },
-  { label: 'Proyectos', href: '/#proyectos' },
-  { label: 'Servicios', href: '/servicios' },
-  { label: 'Sobre mí', href: '/sobre-mi' },
-  { label: 'Contacto', href: '/contacto' },
+  { label: 'Inicio', href: `${baseUrl}` },
+  { label: 'Proyectos', href: `${baseUrl}#proyectos` },
+  { label: 'Servicios', href: `${baseUrl}servicios` },
+  { label: 'Sobre mí', href: `${baseUrl}sobre-mi` },
+  { label: 'Contacto', href: `${baseUrl}contacto` },
 ];
 ---
 
@@ -12,7 +13,7 @@ const navItems = [
   <div class="container-wide">
     <div class="flex items-center justify-between h-16 sm:h-20">
       <a
-        href="/"
+        href={`${baseUrl}`}
         class="flex items-center gap-2.5 group"
         aria-label="Inicio"
       >
@@ -21,7 +22,7 @@ const navItems = [
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
         </div>
-        <span class="font-bold text-lg tracking-tight">PCB Portfolio</span>
+        <span class="font-bold text-lg tracking-tight">Emerson Pérez · PCB</span>
       </a>
 
       <nav class="hidden md:flex items-center gap-1">

@@ -1,0 +1,43 @@
+---
+title: "Termómetro LM3915"
+description: "Indicador de temperatura con display de barra LEDs usando LM3915 y sensor térmico."
+date: "2025-01-20"
+category: "artesanal"
+status: "completado"
+featuredImage: "/images/proyectos/termometro-lm3915/caratu.png"
+specifications:
+  layers: 2
+  dimensions: "35x25mm"
+  type: "FR-4"
+  software: "KiCad"
+  microcontroller: ""
+technologies:
+  - "KiCad"
+  - "LM3915"
+  - "Sensores"
+  - "LEDs"
+tags:
+  - "KiCad"
+  - "LM3915"
+  - "LEDs"
+  - "Sensores"
+images:
+  - src: "/images/proyectos/termometro-lm3915/schematic.png"
+    alt: "Esquemático del termómetro"
+    phase: "diseno"
+  - src: "/images/proyectos/termometro-lm3915/top-layer.png"
+    alt: "Capa superior del PCB"
+    phase: "diseno"
+  - src: "/images/proyectos/termometro-lm3915/bottom-layer.png"
+    alt: "Capa inferior del PCB"
+    phase: "diseno"
+  - src: "/images/proyectos/termometro-lm3915/top-overlay.png"
+    alt: "Vista con overlay de componentes"
+    phase: "diseno"
+  - src: "/images/proyectos/termometro-lm3915/all-layers.png"
+    alt: "Todas las capas del diseño"
+    phase: "diseno"
+  - src: "/images/proyectos/termometro-lm3915/caratu.png"
+    alt: "Vista 3D del PCB"
+    phase: "diseno"
+---

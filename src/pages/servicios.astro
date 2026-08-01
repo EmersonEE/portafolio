@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
+const baseUrl = import.meta.env.BASE_URL;
 const servicios = [
   {
     title: 'Diseño Electrónico',
@@ -166,7 +167,7 @@ const icons: Record<string, string> = {
         de tus necesidades.
       </p>
       <a
-        href="/contacto"
+        href={`${baseUrl}contacto`}
         class="inline-flex items-center gap-2 px-8 py-3.5 bg-white text-surface-900 font-medium rounded-xl hover:bg-surface-100 transition-all duration-200"
       >
         Hablemos de tu proyecto

@@ -10,7 +10,8 @@ export interface Props {
 }
 
 const { title, description, image } = Astro.props;
-const siteTitle = 'PCB Portfolio | Diseño y Fabricación de Circuitos Impresos';
+const siteTitle = 'Emerson Pérez | Diseño y Fabricación de PCBs';
+const baseUrl = import.meta.env.BASE_URL;
 ---
 
 <!DOCTYPE html>
@@ -18,14 +19,14 @@ const siteTitle = 'PCB Portfolio | Diseño y Fabricación de Circuitos Impresos'
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={`${baseUrl}favicon.svg`} />
 
-    <title>{title ? `${title} | PCB Portfolio` : siteTitle}</title>
+    <title>{title ? `${title} | Emerson Pérez` : siteTitle}</title>
     <meta name="description" content={description || 'Portafolio profesional de diseño y fabricación de PCBs. Circuitos impresos artesanales y profesionales.'} />
 
-    <meta property="og:title" content={title || siteTitle} />
+    <meta property="og:title" content={title || 'Emerson Pérez | Diseño y Fabricación de PCBs'} />
     <meta property="og:description" content={description || 'Portafolio profesional de diseño y fabricación de PCBs.'} />
-    {image && <meta property="og:image" content={image} />}
+    {image && <meta property="og:image" content={`${baseUrl}${image.replace(/^\//, '')}`} />}
     <meta property="og:type" content="website" />
 
     <meta name="twitter:card" content="summary_large_image" />
@@ -34,6 +35,8 @@ const siteTitle = 'PCB Portfolio | Diseño y Fabricación de Circuitos Impresos'
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link rel="stylesheet" href={`${baseUrl}scripts/photoswipe.css`} />
 
     <script
       is:inline
@@ -47,6 +50,35 @@ const siteTitle = 'PCB Portfolio | Diseño y Fabricación de Circuitos Impresos'
     <main class="flex-1">
       <slot />
     </main>
+
+    <button
+      id="scroll-top"
+      class="fixed bottom-6 right-6 z-40 w-10 h-10 rounded-xl bg-surface-900 text-white shadow-lg flex items-center justify-center opacity-0 invisible translate-y-4 transition-all duration-300 hover:bg-surface-800 active:scale-95"
+      aria-label="Volver arriba"
+    >
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M5 15l7-7 7 7" />
+      </svg>
+    </button>
+
+    <script>
+      const scrollBtn = document.getElementById('scroll-top');
+      if (scrollBtn) {
+        const toggle = () => {
+          if (window.scrollY > 400) {
+            scrollBtn.classList.remove('opacity-0', 'invisible', 'translate-y-4');
+            scrollBtn.classList.add('opacity-100', 'visible', 'translate-y-0');
+          } else {
+            scrollBtn.classList.remove('opacity-100', 'visible', 'translate-y-0');
+            scrollBtn.classList.add('opacity-0', 'invisible', 'translate-y-4');
+          }
+        };
+        window.addEventListener('scroll', toggle, { passive: true });
+        scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        toggle();
+      }
+    </script>
+
     <Footer />
   </body>
 </html>

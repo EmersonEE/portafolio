@@ -1,0 +1,43 @@
+---
+title: "Borneras para Sensores"
+description: "Módulo de borneras para conexión y distribución de sensores en proyectos de automatización."
+date: "2026-01-28"
+category: "prototipo"
+status: "completado"
+featuredImage: "/images/proyectos/borneras-sensores/3d-viewer.png"
+specifications:
+  layers: 2
+  dimensions: "45x30mm"
+  type: "FR-4"
+  software: "KiCad"
+  microcontroller: ""
+technologies:
+  - "KiCad"
+  - "Sensores"
+  - "Conexión"
+  - "Automatización"
+tags:
+  - "KiCad"
+  - "Sensores"
+  - "Prototipo"
+  - "Conexión"
+images:
+  - src: "/images/proyectos/borneras-sensores/3d-viewer.png"
+    alt: "Vista 3D del PCB"
+    phase: "diseno"
+  - src: "/images/proyectos/borneras-sensores/bottom-layer.png"
+    alt: "Capa inferior del PCB"
+    phase: "diseno"
+  - src: "/images/proyectos/borneras-sensores/IMG_20260128_145711273.jpg"
+    alt: "PCB durante fabricación"
+    phase: "fabricacion"
+  - src: "/images/proyectos/borneras-sensores/IMG_20260128_145724318.jpg"
+    alt: "PCB ensamblado"
+    phase: "fabricacion"
+  - src: "/images/proyectos/borneras-sensores/final.jpg"
+    alt: "Resultado final"
+    phase: "final"
+  - src: "/images/proyectos/borneras-sensores/final2.jpg"
+    alt: "PCB terminado"
+    phase: "final"
+---

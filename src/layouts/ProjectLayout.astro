@@ -8,6 +8,7 @@ export interface Props {
 
 const { project } = Astro.props;
 const { data } = project;
+const baseUrl = import.meta.env.BASE_URL;
 
 const categoryLabels: Record<string, string> = {
   artesanal: 'Artesanal',
@@ -91,45 +92,157 @@ const categoryLabels: Record<string, string> = {
     )}
 
     {data.images && data.images.length > 0 && (
-      <section class="mb-16">
-        <h2 class="text-2xl font-bold mb-6">Galería del Proceso</h2>
-        <div class="masonry-grid" id="gallery">
-          {data.images.map((img) => (
+      <section class="mb-16" id="galeria">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-2">
+          <div>
+            <h2 class="text-2xl font-bold">Galería del Proceso</h2>
+            <p class="text-surface-500 text-sm mt-1">{data.images.length} imágenes documentadas</p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-2 mb-6" id="phase-filters">
+          <button class="phase-filter px-3.5 py-2 text-sm font-medium rounded-xl border transition-all duration-200" data-phase="all">
+            Todas
+          </button>
+          <button class="phase-filter px-3.5 py-2 text-sm font-medium rounded-xl border transition-all duration-200" data-phase="diseno">
+            Diseño
+          </button>
+          <button class="phase-filter px-3.5 py-2 text-sm font-medium rounded-xl border transition-all duration-200" data-phase="fabricacion">
+            Fabricación
+          </button>
+          <button class="phase-filter px-3.5 py-2 text-sm font-medium rounded-xl border transition-all duration-200" data-phase="final">
+            Final
+          </button>
+          <button class="phase-filter px-3.5 py-2 text-sm font-medium rounded-xl border transition-all duration-200" data-phase="pruebas">
+            Pruebas
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4" id="gallery">
+          {data.images.map((img, i) => (
             <a
-              href={img.src}
-              class="masonry-item group block rounded-xl overflow-hidden bg-surface-100 cursor-pointer"
-              data-pswp-width="1920"
-              data-pswp-height="1440"
-              target="_blank"
+              href={`${baseUrl}${img.src.replace(/^\//, '')}`}
+              class="group block rounded-xl overflow-hidden bg-surface-100 cursor-pointer gallery-item"
+              data-phase={img.phase}
+              data-caption={img.alt}
             >
               <img
-                src={img.src}
+                src={`${baseUrl}${img.src.replace(/^\//, '')}`}
                 alt={img.alt}
-                class="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
-                loading="lazy"
+                class="w-full block"
+                style="display: block; width: 100%; height: auto;"
               />
-              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-              <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <p class="text-white text-sm font-medium">{img.alt}</p>
-              </div>
             </a>
           ))}
         </div>
       </section>
     )}
 
+    <script is:inline src={`${import.meta.env.BASE_URL}scripts/photoswipe.umd.min.js`}></script>
+    <script is:inline src={`${import.meta.env.BASE_URL}scripts/photoswipe-lightbox.umd.min.js`}></script>
+    <script is:inline>
+      (function() {
+        const gallery = document.getElementById('gallery');
+        if (!gallery) return;
+
+        function initLightbox() {
+          const lightbox = new PhotoSwipeLightbox({
+            gallery: '#gallery',
+            children: 'a',
+            showHideAnimationType: 'fade',
+            bgOpacity: 0.95,
+            wheelToZoom: true,
+            closeOnVerticalDrag: true,
+            pswpModule: PhotoSwipe,
+          });
+
+          lightbox.on('uiRegister', () => {
+            lightbox.pswp.ui.registerElement({
+              name: 'download-button',
+              order: 8,
+              isButton: true,
+              html: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>',
+              onClick: () => {
+                const slide = lightbox.pswp.currSlide;
+                if (slide) {
+                  const link = document.createElement('a');
+                  link.download = slide.data.src.split('/').pop();
+                  link.href = slide.data.src;
+                  link.click();
+                }
+              },
+            });
+          });
+
+          lightbox.on('opening', () => {
+            document.documentElement.style.overflow = 'hidden';
+          });
+
+          lightbox.on('close', () => {
+            document.documentElement.style.overflow = '';
+          });
+
+          lightbox.init();
+        }
+
+        if (typeof PhotoSwipeLightbox !== 'undefined') {
+          initLightbox();
+        } else {
+          document.addEventListener('DOMContentLoaded', initLightbox);
+        }
+      })();
+
+      (function() {
+        const phaseFilters = document.querySelectorAll('.phase-filter');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+
+        if (!phaseFilters.length) return;
+
+        phaseFilters.forEach((btn) => {
+          btn.classList.add(
+            'border-surface-200', 'text-surface-600',
+            'hover:border-brand-300', 'hover:text-brand-700', 'hover:bg-brand-50',
+            'cursor-pointer'
+          );
+          btn.addEventListener('click', () => {
+            phaseFilters.forEach((b) => {
+              b.classList.remove('bg-brand-50', 'border-brand-300', 'text-brand-700');
+              b.classList.add('border-surface-200', 'text-surface-600');
+            });
+            btn.classList.remove('border-surface-200', 'text-surface-600');
+            btn.classList.add('bg-brand-50', 'border-brand-300', 'text-brand-700');
+
+            const phase = btn.dataset.phase;
+            galleryItems.forEach((item) => {
+              if (phase === 'all' || item.dataset.phase === phase) {
+                item.style.display = '';
+              } else {
+                item.style.display = 'none';
+              }
+            });
+          });
+        });
+
+        const activeFilter = document.querySelector('.phase-filter[data-phase="all"]');
+        if (activeFilter) {
+          activeFilter.classList.remove('border-surface-200', 'text-surface-600');
+          activeFilter.classList.add('bg-brand-50', 'border-brand-300', 'text-brand-700');
+        }
+      })();
+    </script>
+
     {data.beforeAfter && (
       <section class="mb-16">
         <h2 class="text-2xl font-bold mb-6">Comparación</h2>
         <div class="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-surface-100" id="image-compare">
           <img
-            src={data.beforeAfter.before}
+            src={`${baseUrl}${data.beforeAfter.before.replace(/^\//, '')}`}
             alt="Antes"
             class="absolute inset-0 w-full h-full object-cover"
           />
           <div class="absolute inset-0 w-1/2 overflow-hidden" id="compare-after">
             <img
-              src={data.beforeAfter.after}
+              src={`${baseUrl}${data.beforeAfter.after.replace(/^\//, '')}`}
               alt="Después"
               class="absolute inset-0 w-full h-full object-cover"
               style="width: 200%"
@@ -222,7 +335,7 @@ const categoryLabels: Record<string, string> = {
         <div class="flex flex-wrap gap-2">
           {data.tags.map((tag) => (
             <a
-              href={`/?tag=${encodeURIComponent(tag)}`}
+              href={`${baseUrl}?tag=${encodeURIComponent(tag)}`}
               class="px-3 py-1.5 bg-brand-50 text-brand-700 rounded-full text-sm font-medium hover:bg-brand-100 transition-colors"
             >
               #{tag}
@@ -234,7 +347,7 @@ const categoryLabels: Record<string, string> = {
 
     <nav class="border-t border-surface-200 pt-8 mt-16">
       <a
-        href="/"
+        href={`${baseUrl}`}
         class="inline-flex items-center gap-2 text-surface-600 hover:text-surface-900 transition-colors font-medium"
       >
         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
