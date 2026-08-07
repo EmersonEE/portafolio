@@ -7,7 +7,6 @@ status: "completado"
 featuredImage: "/images/proyectos/punta-logica/3d-viever.png"
 specifications:
   layers: 2
-  dimensions: "40x20mm"
   type: "FR-4"
   software: "KiCad"
   microcontroller: ""

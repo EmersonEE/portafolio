@@ -7,7 +7,6 @@ status: "completado"
 featuredImage: "/images/proyectos/inyectores/Inyectores.png"
 specifications:
   layers: 2
-  dimensions: "60x40mm"
   type: "FR-4"
   software: "KiCad"
   microcontroller: "NE555"

@@ -7,7 +7,6 @@ status: "completado"
 featuredImage: "/images/proyectos/iot-esp32-project/portada3d.png"
 specifications:
   layers: 2
-  dimensions: "70x50mm"
   type: "FR-4"
   software: "KiCad"
   microcontroller: "ESP32"

@@ -7,7 +7,6 @@ status: "completado"
 featuredImage: "/images/proyectos/sensor-agua-esp32-oled/3d-viewer.png"
 specifications:
   layers: 2
-  dimensions: "50x30mm"
   type: "FR-4"
   software: "KiCad"
   microcontroller: "ESP32"

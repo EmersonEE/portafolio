@@ -7,7 +7,6 @@ status: "completado"
 featuredImage: "/images/proyectos/fuente-de-poder-esp32/3d-viewers-1.png"
 specifications:
   layers: 2
-  dimensions: "55x35mm"
   type: "FR-4"
   software: "KiCad"
   microcontroller: ""

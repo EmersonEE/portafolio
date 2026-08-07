@@ -7,7 +7,6 @@ status: "completado"
 featuredImage: "/images/proyectos/entrenadora-arduino-uno/visor3d.png"
 specifications:
   layers: 2
-  dimensions: "75x55mm"
   type: "FR-4"
   software: "KiCad"
   microcontroller: "ATmega328"

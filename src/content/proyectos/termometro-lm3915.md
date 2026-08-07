@@ -7,7 +7,6 @@ status: "completado"
 featuredImage: "/images/proyectos/termometro-lm3915/caratu.png"
 specifications:
   layers: 2
-  dimensions: "35x25mm"
   type: "FR-4"
   software: "KiCad"
   microcontroller: ""

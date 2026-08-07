@@ -7,7 +7,6 @@ status: "completado"
 featuredImage: "/images/proyectos/dfplayer-esp32/3d-viewer.png"
 specifications:
   layers: 2
-  dimensions: "55x35mm"
   type: "FR-4"
   software: "KiCad"
   microcontroller: "ESP32"

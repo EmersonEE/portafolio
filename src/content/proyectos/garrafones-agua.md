@@ -7,7 +7,6 @@ status: "completado"
 featuredImage: "/images/proyectos/garrafones-v1/3d-viever.png"
 specifications:
   layers: 2
-  dimensions: "65x45mm"
   type: "FR-4"
   software: "KiCad"
   microcontroller: ""

@@ -7,7 +7,6 @@ status: "completado"
 featuredImage: "/images/proyectos/placas-ampletos/image6.png"
 specifications:
   layers: 2
-  dimensions: "50x40mm"
   type: "FR-4"
   software: "KiCad"
   microcontroller: "Varios"

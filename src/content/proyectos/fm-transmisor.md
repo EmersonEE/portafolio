@@ -7,7 +7,6 @@ status: "completado"
 featuredImage: "/images/proyectos/fm-project/3d-viewer.png"
 specifications:
   layers: 2
-  dimensions: "30x20mm"
   type: "FR-4"
   software: "KiCad"
   microcontroller: ""

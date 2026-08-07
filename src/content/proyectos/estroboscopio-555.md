@@ -7,7 +7,6 @@ status: "completado"
 featuredImage: "/images/proyectos/estroboscopio-pwm-555/3d-vierwer.png"
 specifications:
   layers: 2
-  dimensions: "50x35mm"
   type: "FR-4"
   software: "KiCad"
   microcontroller: ""

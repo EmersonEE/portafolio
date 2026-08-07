@@ -7,7 +7,6 @@ status: "completado"
 featuredImage: "/images/proyectos/corazon/screenshot-2026-07-21_12-20-11.png"
 specifications:
   layers: 2
-  dimensions: "50x45mm"
   type: "FR-4"
   software: "KiCad"
   microcontroller: ""

@@ -7,7 +7,6 @@ status: "completado"
 featuredImage: "/images/proyectos/programador-picaxe/portadaM2.png"
 specifications:
   layers: 2
-  dimensions: "45x30mm"
   type: "FR-4"
   software: "KiCad"
   microcontroller: "PICAXE"

@@ -7,7 +7,6 @@ status: "completado"
 featuredImage: "/images/proyectos/shield-brazo-robotico/3d-viewer.png"
 specifications:
   layers: 2
-  dimensions: "70x50mm"
   type: "FR-4"
   software: "KiCad"
   microcontroller: "Arduino"

@@ -7,7 +7,6 @@ status: "completado"
 featuredImage: "/images/proyectos/entrenadora-esp32/3d-viewer.png"
 specifications:
   layers: 2
-  dimensions: "60x40mm"
   type: "FR-4 · JLCPCB"
   software: "KiCad"
   microcontroller: "ESP32"

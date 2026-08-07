@@ -25,7 +25,6 @@ const proyectoCollection = defineCollection({
     featuredImage: z.string(),
     specifications: z.object({
       layers: z.number(),
-      dimensions: z.string(),
       type: z.string(),
       software: z.string(),
       microcontroller: z.string().optional(),

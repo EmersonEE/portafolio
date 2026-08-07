@@ -7,7 +7,6 @@ status: "completado"
 featuredImage: "/images/proyectos/vumetro-potencia/caratula-vumetro.png"
 specifications:
   layers: 2
-  dimensions: "50x30mm"
   type: "FR-4"
   software: "KiCad"
   microcontroller: ""

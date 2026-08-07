@@ -44,9 +44,6 @@
             "layers": {
               "type": "number"
             },
-            "dimensions": {
-              "type": "string"
-            },
             "type": {
               "type": "string"
             },
@@ -59,7 +56,6 @@
           },
           "required": [
             "layers",
-            "dimensions",
             "type",
             "software"
           ],

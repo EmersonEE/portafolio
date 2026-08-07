@@ -7,7 +7,6 @@ status: "completado"
 featuredImage: "/images/proyectos/termometro-tren/tren3d.png"
 specifications:
   layers: 2
-  dimensions: "40x25mm"
   type: "FR-4"
   software: "KiCad"
   microcontroller: ""
