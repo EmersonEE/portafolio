@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import Stats from '../components/Stats.astro';
+import FeaturedProject from '../components/FeaturedProject.astro';
 import SearchBar from '../components/SearchBar.astro';
 import ProjectGrid from '../components/ProjectGrid.astro';
 import { getCollection } from 'astro:content';
@@ -17,15 +18,30 @@ const allTags = [...new Set(allProjects.flatMap((p) => p.data.tags))].sort();
 const allCategories = [
   ...new Set(allProjects.map((p) => p.data.category)),
 ].sort();
+
+const featured =
+  allProjects.find((p) => p.slug === 'entrenadora-esp32') || allProjects[0];
+const featuredData = featured?.data;
+const featuredImage = featuredData
+  ? `${baseUrl}${featuredData.featuredImage.replace(/^\//, '')}`
+  : '';
 ---
 
 <BaseLayout
   title="Emerson Pérez - Diseño y Fabricación de Circuitos Impresos"
   description="Portafolio profesional de diseño y fabricación de PCBs. Más de 20 proyectos documentados con más de 100 fotografías del proceso completo."
 >
-  <Hero />
+  <Hero
+    featuredImage={featuredImage}
+    featuredTitle={featuredData?.title || ''}
+    featuredSlug={featured?.slug || ''}
+    featuredSoftware={featuredData?.specifications.software || 'KiCad'}
+    featuredLayers={featuredData?.specifications.layers || 2}
+  />
 
   <Stats />
+
+  {featured && <FeaturedProject project={featured} />}
 
   <section id="proyectos" class="container-wide py-16 sm:py-20">
     <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">

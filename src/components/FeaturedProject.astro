@@ -1,0 +1,162 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+export interface Props {
+  project: CollectionEntry<'proyectos'>;
+}
+
+const { project } = Astro.props;
+const { data } = project;
+const baseUrl = import.meta.env.BASE_URL;
+
+const withBase = (src: string) => `${baseUrl}${src.replace(/^\//, '')}`;
+
+const categoryLabels: Record<string, string> = {
+  artesanal: 'Artesanal',
+  profesional: 'Profesional',
+  personal: 'Personal',
+  cliente: 'Cliente',
+  universitario: 'Universitario',
+  prototipo: 'Prototipo',
+};
+---
+
+<section class="container-wide py-16 sm:py-20">
+  <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+    <div>
+      <p class="text-sm font-semibold text-brand-600 uppercase tracking-wider mb-2">
+        Proyecto Destacado
+      </p>
+      <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">
+        {data.title}
+      </h2>
+    </div>
+    <a
+      href={`${baseUrl}proyectos/${project.slug}/`}
+      class="inline-flex items-center gap-2 text-sm font-medium text-brand-600 hover:text-brand-700 transition-colors shrink-0"
+    >
+      Ver proyecto completo
+      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+      </svg>
+    </a>
+  </div>
+
+  <div class="grid lg:grid-cols-5 gap-8 items-start">
+    <div class="lg:col-span-3">
+      <a
+        href={`${baseUrl}proyectos/${project.slug}/`}
+        class="group block rounded-3xl overflow-hidden bg-surface-100 border border-surface-200 shadow-md hover:shadow-xl transition-all duration-500"
+      >
+        <div class="relative aspect-[4/3] overflow-hidden">
+          <img
+            src={withBase(data.featuredImage)}
+            alt={data.title}
+            class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
+          />
+          <div class="absolute top-4 left-4">
+            <span class={`badge-${data.category}`}>{categoryLabels[data.category] || data.category}</span>
+          </div>
+        </div>
+      </a>
+
+      {data.images && data.images.length > 0 && (
+        <div class="grid grid-cols-4 gap-3 mt-4" id="featured-gallery">
+          {data.images.slice(0, 4).map((img) => (
+            <a
+              href={withBase(img.src)}
+              class="group block rounded-xl overflow-hidden bg-surface-100 border border-surface-200"
+              data-caption={img.alt}
+            >
+              <img
+                src={withBase(img.src)}
+                alt={img.alt}
+                loading="lazy"
+                class="w-full aspect-square object-cover transition-all duration-500 group-hover:scale-110"
+              />
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+
+    <div class="lg:col-span-2 lg:pt-2">
+      <p class="text-lg text-surface-600 leading-relaxed mb-6">
+        {data.description}
+      </p>
+
+      <dl class="grid grid-cols-2 gap-4 mb-6">
+        <div class="p-4 rounded-xl bg-surface-50 border border-surface-200">
+          <dt class="text-xs font-medium text-surface-500 uppercase tracking-wider mb-1">Capas</dt>
+          <dd class="font-semibold">{data.specifications.layers}</dd>
+        </div>
+        <div class="p-4 rounded-xl bg-surface-50 border border-surface-200">
+          <dt class="text-xs font-medium text-surface-500 uppercase tracking-wider mb-1">Dimensiones</dt>
+          <dd class="font-semibold">{data.specifications.dimensions}</dd>
+        </div>
+        <div class="p-4 rounded-xl bg-surface-50 border border-surface-200">
+          <dt class="text-xs font-medium text-surface-500 uppercase tracking-wider mb-1">Tipo</dt>
+          <dd class="font-semibold">{data.specifications.type}</dd>
+        </div>
+        <div class="p-4 rounded-xl bg-surface-50 border border-surface-200">
+          <dt class="text-xs font-medium text-surface-500 uppercase tracking-wider mb-1">Software</dt>
+          <dd class="font-semibold">{data.specifications.software}</dd>
+        </div>
+        {data.specifications.microcontroller && (
+          <div class="p-4 rounded-xl bg-surface-50 border border-surface-200">
+            <dt class="text-xs font-medium text-surface-500 uppercase tracking-wider mb-1">Microcontrolador</dt>
+            <dd class="font-semibold">{data.specifications.microcontroller}</dd>
+          </div>
+        )}
+      </dl>
+
+      {data.technologies && data.technologies.length > 0 && (
+        <div class="flex flex-wrap gap-2 mb-8">
+          {data.technologies.map((tech) => (
+            <span class="px-3 py-1.5 bg-surface-100 text-surface-700 rounded-full text-sm font-medium">
+              {tech}
+            </span>
+          ))}
+        </div>
+      )}
+
+      <a
+        href={`${baseUrl}proyectos/${project.slug}/`}
+        class="inline-flex items-center gap-2 px-6 py-3 bg-brand-600 text-white font-medium rounded-xl hover:bg-brand-700 transition-all duration-200 active:scale-[0.98]"
+      >
+        Explorar este proyecto
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script is:inline src={`${baseUrl}scripts/photoswipe.umd.min.js`}></script>
+<script is:inline src={`${baseUrl}scripts/photoswipe-lightbox.umd.min.js`}></script>
+<script is:inline>
+  (function () {
+    const gallery = document.getElementById('featured-gallery');
+    if (!gallery || typeof PhotoSwipeLightbox === 'undefined') return;
+
+    const lightbox = new PhotoSwipeLightbox({
+      gallery: '#featured-gallery',
+      children: 'a',
+      showHideAnimationType: 'fade',
+      bgOpacity: 0.95,
+      wheelToZoom: true,
+      pswpModule: PhotoSwipe,
+    });
+
+    lightbox.on('opening', () => {
+      document.documentElement.style.overflow = 'hidden';
+    });
+
+    lightbox.on('close', () => {
+      document.documentElement.style.overflow = '';
+    });
+
+    lightbox.init();
+  })();
+</script>

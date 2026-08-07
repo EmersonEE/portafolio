@@ -1,19 +1,68 @@
 ---
-
+const stats = [
+  { value: 20, prefix: '+', label: 'Proyectos Completados' },
+  { value: 100, prefix: '+', label: 'Fotografías Documentadas' },
+  { value: 6, prefix: '', label: 'Categorías Diferentes' },
+  { value: 100, prefix: '', suffix: '%', label: 'Dedicación Artesanal' },
+];
 ---
 
 <section class="container-wide py-16 sm:py-20">
   <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-    {[
-      { number: '+20', label: 'Proyectos Completados' },
-      { number: '+100', label: 'Fotografías Documentadas' },
-      { number: '6', label: 'Categorías Diferentes' },
-      { number: '100%', label: 'Dedicación Artesanal' },
-    ].map((stat) => (
+    {stats.map((stat) => (
       <div class="text-center p-6 rounded-2xl bg-surface-50 border border-surface-200">
-        <p class="text-3xl sm:text-4xl font-bold text-brand-600 mb-1">{stat.number}</p>
+        <p class="text-3xl sm:text-4xl font-bold text-brand-600 mb-1">
+          <span class="counter" data-target={stat.value} data-prefix={stat.prefix} data-suffix={stat.suffix || ''}>
+            {stat.prefix}{stat.value}{stat.suffix || ''}
+          </span>
+        </p>
         <p class="text-sm text-surface-600">{stat.label}</p>
       </div>
     ))}
   </div>
 </section>
+
+<script>
+  const counters = document.querySelectorAll('.counter');
+
+  const formatNumber = (n) => n.toLocaleString('es-ES');
+
+  const animateCounter = (el) => {
+    const target = parseInt(el.dataset.target, 10);
+    const prefix = el.dataset.prefix || '';
+    const suffix = el.dataset.suffix || '';
+    const duration = 1500;
+    const start = performance.now();
+
+    const step = (now) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.round(target * eased);
+      el.textContent = `${prefix}${formatNumber(current)}${suffix}`;
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      }
+    };
+
+    requestAnimationFrame(step);
+  };
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            animateCounter(entry.target);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
+    counters.forEach((c) => observer.observe(c));
+  } else {
+    counters.forEach((c) => {
+      c.textContent = `${c.dataset.prefix || ''}${formatNumber(parseInt(c.dataset.target, 10))}${c.dataset.suffix || ''}`;
+    });
+  }
+</script>
