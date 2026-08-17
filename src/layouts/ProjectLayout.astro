@@ -18,6 +18,21 @@ const categoryLabels: Record<string, string> = {
   universitario: 'Universitario',
   prototipo: 'Prototipo',
 };
+
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const projectSchema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: data.title,
+  description: data.description,
+  dateCreated: data.date,
+  url: pageUrl,
+  image: data.featuredImage,
+  creator: {
+    '@type': 'Person',
+    name: 'Emerson Aldair Pérez Rivera',
+  },
+});
 ---
 
 <BaseLayout
@@ -46,6 +61,8 @@ const categoryLabels: Record<string, string> = {
         {data.description}
       </p>
     </header>
+
+    <script type="application/ld+json" set:html={projectSchema} />
 
     <section class="mb-16">
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 p-6 bg-surface-50 rounded-2xl">

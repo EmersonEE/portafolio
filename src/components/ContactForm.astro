@@ -2,7 +2,10 @@
 
 ---
 
-<form class="space-y-6" id="contact-form" action="/api/contact" method="POST">
+<form class="space-y-6" id="contact-form" action="https://formsubmit.co/perezemerson85@gmail.com" method="POST">
+  <input type="hidden" name="_subject" value="Nuevo mensaje desde el portafolio" />
+  <input type="hidden" name="_template" value="table" />
+  <input type="hidden" name="_captcha" value="false" />
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
     <div>
       <label for="name" class="block text-sm font-medium text-surface-700 mb-1.5">
@@ -95,7 +98,10 @@
       try {
         const response = await fetch(form.action, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
           body: JSON.stringify(data),
         });
 
@@ -109,7 +115,7 @@
         }
       } catch {
         formMessage.className = 'p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl text-sm';
-        formMessage.textContent = 'Hubo un error al enviar el mensaje. Por favor intenta de nuevo o escríbeme directamente al correo.';
+        formMessage.innerHTML = 'Hubo un error al enviar el mensaje. Intenta de nuevo o escríbeme directamente a <a href="mailto:perezemerson85@gmail.com" class="underline">perezemerson85@gmail.com</a>.';
         formMessage.classList.remove('hidden');
       } finally {
         submitBtn.disabled = false;

@@ -59,8 +59,8 @@ images:
   - src: "/images/proyectos/entrenadora-esp32/2025-03-28 21.30.43.jpg"
     alt: "Proceso de ensamblaje de la placa entrenadora"
     phase: "fabricacion"
-challenges: "Descripción de los retos del proyecto"
-solutions: "Descripción de cómo los solucionaste"
+challenges: "El principal reto fue diseñar una placa de doble capa que integrara alimentación estable de 3.3V y 5V, circuito de programación y el mayor número de pines de E/S expuestos, todo en un formato compacto de 60x40mm. La gestión de los planos de tierra y el desacoplamiento de la alimentación fueron críticos para evitar ruido en las entradas analógicas del ESP32."
+solutions: "Se diseñó un layout de doble capa en KiCad con plano de tierra continuo en la capa inferior y el ruteo de señales en la superior. Se añadieron condensadores de desacoplamiento cerca de los pines de alimentación, un regulador de 3.3V con capacidad suficiente para el ESP32 y módulos externos, y regletas de expansión para acceder cómodamente a todos los pines GPIO. La fabricación se realizó en JLCPCB, logrando un acabado profesional."
 timeframe: "2 semanas"
-objective: "Objetivo principal del proyecto"
+objective: "Desarrollar una placa entrenadora que permita programar y probar módulos ESP32 de forma rápida y didáctica, ideal para prácticas, prototipado de proyectos IoT y como base de desarrollo para futuros diseños."
 ---
