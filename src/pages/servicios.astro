@@ -2,6 +2,16 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const baseUrl = import.meta.env.BASE_URL;
+const serviceSlugs: Record<string, string> = {
+  'Diseño Electrónico': 'diseno-electronico',
+  'Diseño PCB': 'diseno-pcb',
+  'Fabricación Artesanal': 'fabricacion-artesanal',
+  'Ensamblado y Soldadura': 'ensamblado',
+  'Desarrollo de Firmware': 'firmware',
+  'Prototipado Rápido': 'prototipado',
+  'Consultoría Técnica': 'consultoria',
+  'Soldadura SMD': 'soldadura-smd',
+};
 const servicios = [
   {
     title: 'Diseño Electrónico',
@@ -156,6 +166,10 @@ const icons: Record<string, string> = {
               </li>
             ))}
           </ul>
+          <a href={`${baseUrl}contacto?servicio=${serviceSlugs[servicio.title]}`} class="inline-flex items-center gap-2 mt-6 text-sm font-medium text-brand-600 hover:text-brand-700">
+            Solicitar este servicio
+            <span aria-hidden="true">→</span>
+          </a>
         </div>
       ))}
     </div>

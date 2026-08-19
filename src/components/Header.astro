@@ -40,9 +40,11 @@ const navItems = [
         class="md:hidden p-2 rounded-lg hover:bg-surface-100 transition-colors"
         id="menu-toggle"
         aria-label="Abrir menú"
+        aria-controls="mobile-menu"
+        aria-expanded="false"
       >
-        <svg class="w-6 h-6 text-surface-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M4 6h16M4 12h16M4 18h16" />
+        <svg aria-hidden="true" class="w-6 h-6 text-surface-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </button>
     </div>
@@ -65,12 +67,30 @@ const navItems = [
 <script>
   const toggle = document.getElementById('menu-toggle');
   const menu = document.getElementById('mobile-menu');
+  const menuIcon = document.getElementById('menu-icon');
 
   if (toggle && menu) {
-    toggle.addEventListener('click', () => {
-      menu.classList.toggle('hidden');
-      const isOpen = !menu.classList.contains('hidden');
+    const setMenuState = (isOpen: boolean) => {
+      menu.classList.toggle('hidden', !isOpen);
+      toggle.setAttribute('aria-expanded', String(isOpen));
       toggle.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+      if (menuIcon) {
+        menuIcon.setAttribute('d', isOpen ? 'M6 6l12 12M6 18L18 6' : 'M4 6h16M4 12h16M4 18h16');
+      }
+    };
+
+    toggle.addEventListener('click', () => {
+      setMenuState(menu.classList.contains('hidden'));
+    });
+    menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setMenuState(false)));
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !menu.classList.contains('hidden')) {
+        setMenuState(false);
+        toggle.focus();
+      }
+    });
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 768) setMenuState(false);
     });
   }
 </script>

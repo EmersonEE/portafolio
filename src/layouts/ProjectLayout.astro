@@ -20,6 +20,7 @@ const categoryLabels: Record<string, string> = {
 };
 
 const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const imageUrl = new URL(`${baseUrl}${data.featuredImage.replace(/^\//, '')}`, Astro.site).href;
 const projectSchema = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'CreativeWork',
@@ -27,7 +28,7 @@ const projectSchema = JSON.stringify({
   description: data.description,
   dateCreated: data.date,
   url: pageUrl,
-  image: data.featuredImage,
+  image: imageUrl,
   creator: {
     '@type': 'Person',
     name: 'Emerson Aldair Pérez Rivera',
@@ -42,6 +43,15 @@ const projectSchema = JSON.stringify({
 >
   <article class="container-narrow py-16 lg:py-24">
     <header class="mb-12">
+      <nav aria-label="Migas de pan" class="mb-6 text-sm text-surface-500">
+        <ol class="flex flex-wrap items-center gap-2">
+          <li><a href={`${baseUrl}`} class="hover:text-brand-600 transition-colors">Inicio</a></li>
+          <li aria-hidden="true">/</li>
+          <li><a href={`${baseUrl}#proyectos`} class="hover:text-brand-600 transition-colors">Proyectos</a></li>
+          <li aria-hidden="true">/</li>
+          <li aria-current="page" class="text-surface-700">{data.title}</li>
+        </ol>
+      </nav>
       <div class="flex flex-wrap items-center gap-3 mb-4">
         <span class={`badge-${data.category}`}>
           {categoryLabels[data.category]}
@@ -62,7 +72,7 @@ const projectSchema = JSON.stringify({
       </p>
     </header>
 
-    <script type="application/ld+json" set:html={projectSchema} />
+    <script is:inline type="application/ld+json" set:html={projectSchema} />
 
     <section class="mb-16">
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 p-6 bg-surface-50 rounded-2xl">
@@ -114,19 +124,19 @@ const projectSchema = JSON.stringify({
         </div>
 
         <div class="flex flex-wrap gap-2 mb-6" id="phase-filters">
-          <button class="phase-filter px-3.5 py-2 text-sm font-medium rounded-xl border transition-all duration-200" data-phase="all">
+          <button aria-pressed="true" class="phase-filter px-3.5 py-2 text-sm font-medium rounded-xl border transition-all duration-200" data-phase="all">
             Todas
           </button>
-          <button class="phase-filter px-3.5 py-2 text-sm font-medium rounded-xl border transition-all duration-200" data-phase="diseno">
+          <button aria-pressed="false" class="phase-filter px-3.5 py-2 text-sm font-medium rounded-xl border transition-all duration-200" data-phase="diseno">
             Diseño
           </button>
-          <button class="phase-filter px-3.5 py-2 text-sm font-medium rounded-xl border transition-all duration-200" data-phase="fabricacion">
+          <button aria-pressed="false" class="phase-filter px-3.5 py-2 text-sm font-medium rounded-xl border transition-all duration-200" data-phase="fabricacion">
             Fabricación
           </button>
-          <button class="phase-filter px-3.5 py-2 text-sm font-medium rounded-xl border transition-all duration-200" data-phase="final">
+          <button aria-pressed="false" class="phase-filter px-3.5 py-2 text-sm font-medium rounded-xl border transition-all duration-200" data-phase="final">
             Final
           </button>
-          <button class="phase-filter px-3.5 py-2 text-sm font-medium rounded-xl border transition-all duration-200" data-phase="pruebas">
+          <button aria-pressed="false" class="phase-filter px-3.5 py-2 text-sm font-medium rounded-xl border transition-all duration-200" data-phase="pruebas">
             Pruebas
           </button>
         </div>
@@ -138,12 +148,16 @@ const projectSchema = JSON.stringify({
               class="group block rounded-xl overflow-hidden bg-surface-100 cursor-pointer gallery-item"
               data-phase={img.phase}
               data-caption={img.alt}
+              data-pswp-width="1600"
+              data-pswp-height="1200"
             >
               <img
                 src={`${baseUrl}${img.src.replace(/^\//, '')}`}
                 alt={img.alt}
                 class="w-full block"
                 style="display: block; width: 100%; height: auto;"
+                loading={i < 3 ? 'eager' : 'lazy'}
+                decoding="async"
               />
             </a>
           ))}
@@ -226,6 +240,7 @@ const projectSchema = JSON.stringify({
             btn.classList.add('bg-brand-50', 'border-brand-300', 'text-brand-700');
 
             const phase = btn.dataset.phase;
+            phaseFilters.forEach((b) => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
             galleryItems.forEach((item) => {
               if (phase === 'all' || item.dataset.phase === phase) {
                 item.style.display = '';
@@ -239,7 +254,8 @@ const projectSchema = JSON.stringify({
         const activeFilter = document.querySelector('.phase-filter[data-phase="all"]');
         if (activeFilter) {
           activeFilter.classList.remove('border-surface-200', 'text-surface-600');
-          activeFilter.classList.add('bg-brand-50', 'border-brand-300', 'text-brand-700');
+            activeFilter.classList.add('bg-brand-50', 'border-brand-300', 'text-brand-700');
+            activeFilter.setAttribute('aria-pressed', 'true');
         }
       })();
     </script>
@@ -266,8 +282,10 @@ const projectSchema = JSON.stringify({
             min="0"
             max="100"
             value="50"
-            class="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-10"
-            id="compare-slider"
+             class="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-10"
+             id="compare-slider"
+             aria-label="Comparar imágenes antes y después"
+             aria-valuetext="50% de comparación"
           />
           <div
             class="absolute top-0 bottom-0 w-0.5 bg-white shadow-lg z-[5]"
@@ -283,13 +301,13 @@ const projectSchema = JSON.stringify({
           </div>
           {data.beforeAfter.label && (
             <>
-              <span class="absolute bottom-4 left-4 px-2 py-1 bg-black/60 text-white text-xs rounded z-[5]">Antes</span>
-              <span class="absolute bottom-4 right-4 px-2 py-1 bg-black/60 text-white text-xs rounded z-[5]">Después</span>
+               <span class="absolute bottom-4 left-4 px-2 py-1 bg-black/60 text-white text-xs rounded z-[5]">{data.beforeAfter.label || 'Antes'}</span>
+               <span class="absolute bottom-4 right-4 px-2 py-1 bg-black/60 text-white text-xs rounded z-[5]">Después</span>
             </>
           )}
         </div>
         <script>
-          const slider = document.getElementById('compare-slider');
+           const slider = document.getElementById('compare-slider') as HTMLInputElement | null;
           const afterEl = document.getElementById('compare-after');
           const lineEl = document.getElementById('compare-line');
 
@@ -298,6 +316,7 @@ const projectSchema = JSON.stringify({
               const val = slider.value;
               afterEl.style.width = val + '%';
               lineEl.style.left = val + '%';
+              slider.setAttribute('aria-valuetext', `${val}% de comparación`);
             };
             slider.addEventListener('input', update);
             update();

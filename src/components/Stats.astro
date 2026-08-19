@@ -1,8 +1,15 @@
 ---
+export interface Props {
+  projects?: number;
+  photos?: number;
+  categories?: number;
+}
+
+const { projects = 0, photos = 0, categories = 0 } = Astro.props;
 const stats = [
-  { value: 20, prefix: '+', label: 'Proyectos Completados' },
-  { value: 100, prefix: '+', label: 'Fotografías Documentadas' },
-  { value: 6, prefix: '', label: 'Categorías Diferentes' },
+  { value: projects, prefix: '+', label: 'Proyectos Documentados' },
+  { value: photos, prefix: '+', label: 'Fotografías Documentadas' },
+  { value: categories, prefix: '', label: 'Categorías Diferentes' },
   { value: 100, prefix: '', suffix: '%', label: 'Dedicación Artesanal' },
 ];
 ---
@@ -23,36 +30,43 @@ const stats = [
 </section>
 
 <script>
-  const counters = document.querySelectorAll('.counter');
+  const counters = document.querySelectorAll<HTMLElement>('.counter');
 
-  const formatNumber = (n) => n.toLocaleString('es-ES');
+  const formatNumber = (n: number) => n.toLocaleString('es-ES');
 
-  const animateCounter = (el) => {
-    const target = parseInt(el.dataset.target, 10);
+  const animateCounter = (el: HTMLElement) => {
+    const target = parseInt(el.dataset.target || '0', 10);
     const prefix = el.dataset.prefix || '';
     const suffix = el.dataset.suffix || '';
     const duration = 1500;
     const start = performance.now();
+    let frameId: number;
 
-    const step = (now) => {
+    const step = (now: number) => {
       const progress = Math.min((now - start) / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
       const current = Math.round(target * eased);
       el.textContent = `${prefix}${formatNumber(current)}${suffix}`;
       if (progress < 1) {
-        requestAnimationFrame(step);
+        frameId = requestAnimationFrame(step);
       }
     };
 
-    requestAnimationFrame(step);
+    frameId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(frameId);
   };
 
-  if ('IntersectionObserver' in window) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    counters.forEach((c) => {
+       c.textContent = `${c.dataset.prefix || ''}${formatNumber(parseInt(c.dataset.target || '0', 10))}${c.dataset.suffix || ''}`;
+    });
+  } else if ('IntersectionObserver' in window) {
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            animateCounter(entry.target);
+            animateCounter(entry.target as HTMLElement);
             observer.unobserve(entry.target);
           }
         });
@@ -62,7 +76,7 @@ const stats = [
     counters.forEach((c) => observer.observe(c));
   } else {
     counters.forEach((c) => {
-      c.textContent = `${c.dataset.prefix || ''}${formatNumber(parseInt(c.dataset.target, 10))}${c.dataset.suffix || ''}`;
+       c.textContent = `${c.dataset.prefix || ''}${formatNumber(parseInt(c.dataset.target || '0', 10))}${c.dataset.suffix || ''}`;
     });
   }
 </script>

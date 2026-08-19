@@ -95,7 +95,14 @@ const skills = [
                   <span class="font-medium text-surface-700">{skill.name}</span>
                   <span class="text-surface-400">{skill.level}%</span>
                 </div>
-                <div class="h-2 bg-surface-100 rounded-full overflow-hidden">
+                <div
+                  class="h-2 bg-surface-100 rounded-full overflow-hidden"
+                  role="progressbar"
+                  aria-label={`Nivel de ${skill.name}`}
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  aria-valuenow={skill.level}
+                >
                   <div
                     class="h-full bg-brand-500 rounded-full transition-all duration-1000"
                     style={`width: ${skill.level}%`}

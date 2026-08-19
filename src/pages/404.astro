@@ -12,8 +12,16 @@ const baseUrl = import.meta.env.BASE_URL;
     </div>
     <h1 class="text-4xl font-bold text-surface-900 mb-3">Página no encontrada</h1>
     <p class="text-lg text-surface-500 mb-8">La página que buscas no existe o ha sido movida.</p>
-    <a href={`${baseUrl}`} class="inline-flex items-center gap-2 px-6 py-3 bg-surface-900 text-white font-medium rounded-xl hover:bg-surface-800 transition-all">
-      Volver al Inicio
-    </a>
+    <div class="flex flex-wrap justify-center gap-3">
+      <a href={`${baseUrl}`} class="inline-flex items-center gap-2 px-6 py-3 bg-surface-900 text-white font-medium rounded-xl hover:bg-surface-800 transition-all">
+        Volver al Inicio
+      </a>
+      <a href={`${baseUrl}#proyectos`} class="inline-flex items-center gap-2 px-6 py-3 bg-surface-100 text-surface-700 font-medium rounded-xl hover:bg-surface-200 transition-all">
+        Ver Proyectos
+      </a>
+      <a href={`${baseUrl}contacto`} class="inline-flex items-center gap-2 px-6 py-3 bg-surface-100 text-surface-700 font-medium rounded-xl hover:bg-surface-200 transition-all">
+        Contacto
+      </a>
+    </div>
   </div>
 </BaseLayout>
