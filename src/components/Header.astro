@@ -22,7 +22,7 @@ const navItems = [
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
         </div>
-        <span class="font-bold text-lg tracking-tight">Emerson Pérez · PCB</span>
+        <span class="font-bold text-lg tracking-tight"><span class="hidden sm:inline">Emerson Pérez · </span>PCB</span>
       </a>
 
       <nav class="hidden md:flex items-center gap-1">
@@ -92,5 +92,12 @@ const navItems = [
     window.addEventListener('resize', () => {
       if (window.innerWidth >= 768) setMenuState(false);
     });
+  }
+
+  const header = document.querySelector('header');
+  if (header) {
+    const updateHeader = () => header.classList.toggle('is-scrolled', window.scrollY > 12);
+    window.addEventListener('scroll', updateHeader, { passive: true });
+    updateHeader();
   }
 </script>
