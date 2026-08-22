@@ -85,61 +85,63 @@
 </form>
 
 <script>
-  const form = document.getElementById('contact-form') as HTMLFormElement;
-  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
-  const formMessage = document.getElementById('form-message') as HTMLElement;
+  document.addEventListener('astro:page-load', () => {
+    const form = document.getElementById('contact-form') as HTMLFormElement | null;
+    const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement | null;
+    const formMessage = document.getElementById('form-message') as HTMLElement | null;
 
-  if (form) {
-    const service = new URLSearchParams(window.location.search).get('servicio');
-    const serviceSelect = document.getElementById('service') as HTMLSelectElement | null;
-    if (service && serviceSelect && Array.from(serviceSelect.options).some((option) => option.value === service)) {
-      serviceSelect.value = service;
-    }
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if ((form.querySelector('[name="_honey"]') as HTMLInputElement | null)?.value) return;
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Enviando...';
-      formMessage.className = 'p-4 bg-surface-50 dark:bg-surface-900 border border-surface-200 dark:border-surface-800 text-surface-600 dark:text-surface-300 rounded-xl text-sm';
-      formMessage.textContent = 'Enviando tu mensaje...';
-      formMessage.classList.remove('hidden');
-
-      const formData = new FormData(form);
-      const controller = new AbortController();
-      const timeout = window.setTimeout(() => controller.abort(), 15000);
-
-      try {
-        const response = await fetch(`https://formsubmit.co/ajax/${form.action.split('/').pop()}`, {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-          },
-          body: formData,
-          signal: controller.signal,
-        });
-
-        if (response.ok) {
-          formMessage.className = 'p-4 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 text-emerald-700 dark:text-emerald-300 rounded-xl text-sm';
-          formMessage.textContent = 'Mensaje enviado con éxito. Te responderé a la brevedad.';
-          form.reset();
-        } else {
-          throw new Error('Error al enviar');
-        }
-      } catch {
-        formMessage.className = 'p-4 bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-800/60 text-red-700 dark:text-red-300 rounded-xl text-sm';
-        formMessage.textContent = 'Hubo un error al enviar el mensaje. Intenta de nuevo o escríbeme directamente a ';
-        const emailLink = document.createElement('a');
-        emailLink.href = 'mailto:perezemerson85@gmail.com';
-        emailLink.className = 'underline';
-        emailLink.textContent = 'perezemerson85@gmail.com';
-        formMessage.append(emailLink, '.');
-      } finally {
-        window.clearTimeout(timeout);
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Enviar Mensaje';
-        formMessage.focus();
+    if (form && submitBtn && formMessage) {
+      const service = new URLSearchParams(window.location.search).get('servicio');
+      const serviceSelect = document.getElementById('service') as HTMLSelectElement | null;
+      if (service && serviceSelect && Array.from(serviceSelect.options).some((option) => option.value === service)) {
+        serviceSelect.value = service;
       }
-    });
-  }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if ((form.querySelector('[name="_honey"]') as HTMLInputElement | null)?.value) return;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Enviando...';
+        formMessage.className = 'p-4 bg-surface-50 dark:bg-surface-900 border border-surface-200 dark:border-surface-800 text-surface-600 dark:text-surface-300 rounded-xl text-sm';
+        formMessage.textContent = 'Enviando tu mensaje...';
+        formMessage.classList.remove('hidden');
+
+        const formData = new FormData(form);
+        const controller = new AbortController();
+        const timeout = window.setTimeout(() => controller.abort(), 15000);
+
+        try {
+          const response = await fetch(`https://formsubmit.co/ajax/${form.action.split('/').pop()}`, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+            },
+            body: formData,
+            signal: controller.signal,
+          });
+
+          if (response.ok) {
+            formMessage.className = 'p-4 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 text-emerald-700 dark:text-emerald-300 rounded-xl text-sm';
+            formMessage.textContent = 'Mensaje enviado con éxito. Te responderé a la brevedad.';
+            form.reset();
+          } else {
+            throw new Error('Error al enviar');
+          }
+        } catch {
+          formMessage.className = 'p-4 bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-800/60 text-red-700 dark:text-red-300 rounded-xl text-sm';
+          formMessage.textContent = 'Hubo un error al enviar el mensaje. Intenta de nuevo o escríbeme directamente a ';
+          const emailLink = document.createElement('a');
+          emailLink.href = 'mailto:perezemerson85@gmail.com';
+          emailLink.className = 'underline';
+          emailLink.textContent = 'perezemerson85@gmail.com';
+          formMessage.append(emailLink, '.');
+        } finally {
+          window.clearTimeout(timeout);
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Enviar Mensaje';
+          formMessage.focus();
+        }
+      });
+    }
+  });
 </script>

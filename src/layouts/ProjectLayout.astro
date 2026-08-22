@@ -40,7 +40,7 @@ const projectSchema = JSON.stringify({
 <BaseLayout
   title={data.title}
   description={data.description}
-  image={data.featuredImage}
+  image={`${baseUrl}proyectos/${project.slug}/og.png`}
 >
   <article class="container-narrow py-16 lg:py-24">
     <header class="mb-12">
@@ -151,6 +151,7 @@ const projectSchema = JSON.stringify({
               data-caption={img.alt}
               data-pswp-width={img.src.width}
               data-pswp-height={img.src.height}
+              {...(i === 0 ? { 'transition:name': `project-image-${project.slug}` } : {})}
             >
               <Image
                 src={img.src}
@@ -171,11 +172,16 @@ const projectSchema = JSON.stringify({
     <script is:inline src={`${import.meta.env.BASE_URL}scripts/photoswipe-lightbox.umd.min.js`}></script>
     <script is:inline>
       (function() {
-        const gallery = document.getElementById('gallery');
-        if (!gallery) return;
+        let lightbox = null;
+        function initProjectLightbox() {
+          const gallery = document.getElementById('gallery');
+          if (!gallery || typeof PhotoSwipeLightbox === 'undefined') return;
 
-        function initLightbox() {
-          const lightbox = new PhotoSwipeLightbox({
+          if (lightbox) {
+            try { lightbox.destroy(); } catch {}
+          }
+
+          lightbox = new PhotoSwipeLightbox({
             gallery: '#gallery',
             children: 'a',
             showHideAnimationType: 'fade',
@@ -214,37 +220,46 @@ const projectSchema = JSON.stringify({
           lightbox.init();
         }
 
-        if (typeof PhotoSwipeLightbox !== 'undefined') {
-          initLightbox();
-        } else {
-          document.addEventListener('DOMContentLoaded', initLightbox);
-        }
-      })();
+        function initPhaseFilters() {
+          const phaseFilters = document.querySelectorAll('.phase-filter');
+          const galleryItems = document.querySelectorAll('.gallery-item');
 
-      (function() {
-        const phaseFilters = document.querySelectorAll('.phase-filter');
-        const galleryItems = document.querySelectorAll('.gallery-item');
+          if (!phaseFilters.length) return;
 
-        if (!phaseFilters.length) return;
+          phaseFilters.forEach((btn) => {
+            btn.addEventListener('click', () => {
+              phaseFilters.forEach((b) => {
+                b.classList.remove('active');
+                b.setAttribute('aria-pressed', 'false');
+              });
+              btn.classList.add('active');
+              btn.setAttribute('aria-pressed', 'true');
 
-        phaseFilters.forEach((btn) => {
-          btn.addEventListener('click', () => {
-            phaseFilters.forEach((b) => {
-              b.classList.remove('active');
-              b.setAttribute('aria-pressed', 'false');
-            });
-            btn.classList.add('active');
-            btn.setAttribute('aria-pressed', 'true');
-
-            const phase = btn.dataset.phase;
-            galleryItems.forEach((item) => {
-              if (phase === 'all' || item.dataset.phase === phase) {
-                item.style.display = '';
-              } else {
-                item.style.display = 'none';
-              }
+              const phase = btn.dataset.phase;
+              galleryItems.forEach((item) => {
+                if (phase === 'all' || item.dataset.phase === phase) {
+                  item.style.display = '';
+                } else {
+                  item.style.display = 'none';
+                }
+              });
             });
           });
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', () => {
+            initProjectLightbox();
+            initPhaseFilters();
+          });
+        } else {
+          initProjectLightbox();
+          initPhaseFilters();
+        }
+
+        document.addEventListener('astro:page-load', () => {
+          initProjectLightbox();
+          initPhaseFilters();
         });
       })();
     </script>
@@ -305,20 +320,22 @@ const projectSchema = JSON.stringify({
           )}
         </div>
         <script>
-          const slider = document.getElementById('compare-slider') as HTMLInputElement | null;
-          const afterEl = document.getElementById('compare-after');
-          const lineEl = document.getElementById('compare-line');
+          document.addEventListener('astro:page-load', () => {
+            const slider = document.getElementById('compare-slider') as HTMLInputElement | null;
+            const afterEl = document.getElementById('compare-after');
+            const lineEl = document.getElementById('compare-line');
 
-          if (slider && afterEl && lineEl) {
-            const update = () => {
-              const val = slider.value;
-              afterEl.style.width = val + '%';
-              lineEl.style.left = val + '%';
-              slider.setAttribute('aria-valuetext', `${val}% de comparación`);
-            };
-            slider.addEventListener('input', update);
-            update();
-          }
+            if (slider && afterEl && lineEl) {
+              const update = () => {
+                const val = slider.value;
+                afterEl.style.width = val + '%';
+                lineEl.style.left = val + '%';
+                slider.setAttribute('aria-valuetext', `${val}% de comparación`);
+              };
+              slider.addEventListener('input', update);
+              update();
+            }
+          });
         </script>
       </section>
     )}

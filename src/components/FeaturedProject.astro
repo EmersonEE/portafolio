@@ -138,26 +138,40 @@ const categoryLabels: Record<string, string> = {
 <script is:inline src={`${baseUrl}scripts/photoswipe-lightbox.umd.min.js`}></script>
 <script is:inline>
   (function () {
-    const gallery = document.getElementById('featured-gallery');
-    if (!gallery || typeof PhotoSwipeLightbox === 'undefined') return;
+    let lightbox = null;
+    function initFeaturedLightbox() {
+      const gallery = document.getElementById('featured-gallery');
+      if (!gallery || typeof PhotoSwipeLightbox === 'undefined') return;
 
-    const lightbox = new PhotoSwipeLightbox({
-      gallery: '#featured-gallery',
-      children: 'a',
-      showHideAnimationType: 'fade',
-      bgOpacity: 0.95,
-      wheelToZoom: true,
-      pswpModule: PhotoSwipe,
-    });
+      if (lightbox) {
+        try { lightbox.destroy(); } catch {}
+      }
 
-    lightbox.on('opening', () => {
-      document.documentElement.style.overflow = 'hidden';
-    });
+      lightbox = new PhotoSwipeLightbox({
+        gallery: '#featured-gallery',
+        children: 'a',
+        showHideAnimationType: 'fade',
+        bgOpacity: 0.95,
+        wheelToZoom: true,
+        pswpModule: PhotoSwipe,
+      });
 
-    lightbox.on('close', () => {
-      document.documentElement.style.overflow = '';
-    });
+      lightbox.on('opening', () => {
+        document.documentElement.style.overflow = 'hidden';
+      });
 
-    lightbox.init();
+      lightbox.on('close', () => {
+        document.documentElement.style.overflow = '';
+      });
+
+      lightbox.init();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initFeaturedLightbox);
+    } else {
+      initFeaturedLightbox();
+    }
+    document.addEventListener('astro:page-load', initFeaturedLightbox);
   })();
 </script>

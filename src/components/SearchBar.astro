@@ -69,143 +69,147 @@ const categoryLabels: Record<string, string> = {
 </div>
 
 <script>
-  const searchInput = document.getElementById('search-input') as HTMLInputElement | null;
-  const filterChips = document.querySelectorAll<HTMLButtonElement>('.filter-chip');
-  const tagChips = document.querySelectorAll<HTMLButtonElement>('.tag-chip');
-  const projectCards = document.querySelectorAll<HTMLElement>('#project-list > div');
-  const resultMessage = document.getElementById('project-results');
+  document.addEventListener('astro:page-load', () => {
+    const searchInput = document.getElementById('search-input') as HTMLInputElement | null;
+    const filterChips = document.querySelectorAll<HTMLButtonElement>('.filter-chip');
+    const tagChips = document.querySelectorAll<HTMLButtonElement>('.tag-chip');
+    const projectCards = document.querySelectorAll<HTMLElement>('#project-list > div');
+    const resultMessage = document.getElementById('project-results');
 
-  let activeFilter = 'all';
-  let activeTag = '';
-  let searchQuery = '';
+    if (!filterChips.length && !projectCards.length) return;
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const urlCategory = urlParams.get('categoria');
-  const urlTag = urlParams.get('tag');
+    let activeFilter = 'all';
+    let activeTag = '';
+    let searchQuery = '';
 
-  if (urlCategory && Array.from(filterChips).some((chip) => chip.dataset.filter === urlCategory)) {
-    activeFilter = urlCategory;
-    filterChips.forEach((chip) => {
-      chip.classList.toggle('active', chip.dataset.filter === urlCategory);
-    });
-  }
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlCategory = urlParams.get('categoria');
+    const urlTag = urlParams.get('tag');
 
-  if (urlTag && Array.from(tagChips).some((chip) => chip.dataset.tag === urlTag)) {
-    activeTag = urlTag;
-    tagChips.forEach((chip) => {
-      chip.classList.toggle('active', chip.dataset.tag === urlTag);
-    });
-  }
-
-  function filterProjects() {
-    projectCards.forEach((card) => {
-      const cat = card.dataset.category || '';
-      const tags = (card.dataset.tags || '').toLowerCase();
-      const technologies = (card.dataset.technologies || '').toLowerCase();
-      const software = (card.dataset.software || '').toLowerCase();
-      const microcontroller = (card.dataset.microcontroller || '').toLowerCase();
-      const client = (card.dataset.client || '').toLowerCase();
-      const name = (card.dataset.name || '').toLowerCase();
-      const desc = (card.dataset.description || '').toLowerCase();
-      const query = searchQuery.toLowerCase();
-
-      const matchesCategory = activeFilter === 'all' || cat === activeFilter;
-      const matchesTag = !activeTag || tags.includes(activeTag.toLowerCase());
-      const matchesSearch =
-        !query ||
-        name.includes(query) ||
-        desc.includes(query) ||
-        tags.includes(query) ||
-        technologies.includes(query) ||
-        software.includes(query) ||
-        microcontroller.includes(query) ||
-        client.includes(query);
-
-      if (matchesCategory && matchesTag && matchesSearch) {
-        card.style.display = '';
-        card.style.animation = 'none';
-        card.offsetHeight;
-        card.style.animation = 'scaleIn 0.3s ease-out forwards';
-      } else {
-        card.style.display = 'none';
-      }
-    });
-    if (resultMessage) {
-      const visibleCount = Array.from(projectCards).filter((card) => card.style.display !== 'none').length;
-      resultMessage.textContent = `${visibleCount} ${visibleCount === 1 ? 'proyecto encontrado' : 'proyectos encontrados'}`;
+    if (urlCategory && Array.from(filterChips).some((chip) => chip.dataset.filter === urlCategory)) {
+      activeFilter = urlCategory;
+      filterChips.forEach((chip) => {
+        chip.classList.toggle('active', chip.dataset.filter === urlCategory);
+      });
     }
-  }
 
-  if (filterChips.length) {
-    filterChips.forEach((chip) => {
-      chip.addEventListener('click', () => {
-        filterChips.forEach((c) => {
-          c.classList.remove('active');
+    if (urlTag && Array.from(tagChips).some((chip) => chip.dataset.tag === urlTag)) {
+      activeTag = urlTag;
+      tagChips.forEach((chip) => {
+        chip.classList.toggle('active', chip.dataset.tag === urlTag);
+      });
+    }
+
+    function filterProjects() {
+      projectCards.forEach((card) => {
+        const cat = card.dataset.category || '';
+        const tags = (card.dataset.tags || '').toLowerCase();
+        const technologies = (card.dataset.technologies || '').toLowerCase();
+        const software = (card.dataset.software || '').toLowerCase();
+        const microcontroller = (card.dataset.microcontroller || '').toLowerCase();
+        const client = (card.dataset.client || '').toLowerCase();
+        const name = (card.dataset.name || '').toLowerCase();
+        const desc = (card.dataset.description || '').toLowerCase();
+        const query = searchQuery.toLowerCase();
+
+        const matchesCategory = activeFilter === 'all' || cat === activeFilter;
+        const matchesTag = !activeTag || tags.includes(activeTag.toLowerCase());
+        const matchesSearch =
+          !query ||
+          name.includes(query) ||
+          desc.includes(query) ||
+          tags.includes(query) ||
+          technologies.includes(query) ||
+          software.includes(query) ||
+          microcontroller.includes(query) ||
+          client.includes(query);
+
+        if (matchesCategory && matchesTag && matchesSearch) {
+          card.style.display = '';
+          card.style.animation = 'none';
+          card.offsetHeight;
+          card.style.animation = 'scaleIn 0.3s ease-out forwards';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      if (resultMessage) {
+        const visibleCount = Array.from(projectCards).filter((card) => card.style.display !== 'none').length;
+        resultMessage.textContent = `${visibleCount} ${visibleCount === 1 ? 'proyecto encontrado' : 'proyectos encontrados'}`;
+      }
+    }
+
+    if (filterChips.length) {
+      filterChips.forEach((chip) => {
+        chip.addEventListener('click', () => {
+          filterChips.forEach((c) => {
+            c.classList.remove('active');
+          });
+          chip.classList.add('active');
+          activeFilter = chip.dataset.filter || 'all';
+          filterChips.forEach((c) => c.setAttribute('aria-pressed', c === chip ? 'true' : 'false'));
+          tagChips.forEach((c) => {
+            c.classList.remove('active');
+            c.setAttribute('aria-pressed', 'false');
+          });
+          activeTag = '';
+          updateUrl();
+          filterProjects();
         });
-        chip.classList.add('active');
-        activeFilter = chip.dataset.filter || 'all';
-        filterChips.forEach((c) => c.setAttribute('aria-pressed', c === chip ? 'true' : 'false'));
-        tagChips.forEach((c) => {
-          c.classList.remove('active');
-          c.setAttribute('aria-pressed', 'false');
+      });
+    }
+
+    if (tagChips.length) {
+      tagChips.forEach((chip) => {
+        chip.addEventListener('click', () => {
+          tagChips.forEach((c) => {
+            c.classList.remove('active');
+            c.setAttribute('aria-pressed', 'false');
+          });
+          filterChips.forEach((c) => {
+            c.classList.remove('active');
+            c.setAttribute('aria-pressed', 'false');
+          });
+          chip.classList.add('active');
+          chip.setAttribute('aria-pressed', 'true');
+          activeTag = chip.dataset.tag || '';
+          activeFilter = 'all';
+          updateUrl();
+          filterProjects();
         });
-        activeTag = '';
-        updateUrl();
+      });
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        searchQuery = searchInput.value;
         filterProjects();
       });
-    });
-  }
+    }
 
-  if (tagChips.length) {
-    tagChips.forEach((chip) => {
-      chip.addEventListener('click', () => {
-        tagChips.forEach((c) => {
-          c.classList.remove('active');
-          c.setAttribute('aria-pressed', 'false');
-        });
-        filterChips.forEach((c) => {
-          c.classList.remove('active');
-          c.setAttribute('aria-pressed', 'false');
-        });
-        chip.classList.add('active');
-        chip.setAttribute('aria-pressed', 'true');
-        activeTag = chip.dataset.tag || '';
-        activeFilter = 'all';
-        updateUrl();
-        filterProjects();
-      });
-    });
-  }
+    function updateUrl() {
+      const params = new URLSearchParams(window.location.search);
+      if (activeFilter === 'all') params.delete('categoria');
+      else params.set('categoria', activeFilter);
+      if (activeTag) params.set('tag', activeTag);
+      else params.delete('tag');
+      const query = params.toString();
+      window.history.replaceState({}, '', `${window.location.pathname}${query ? `?${query}` : ''}`);
+    }
 
-  if (searchInput) {
-    searchInput.addEventListener('input', () => {
-      searchQuery = searchInput.value;
-      filterProjects();
-    });
-  }
-
-  function updateUrl() {
-    const params = new URLSearchParams(window.location.search);
-    if (activeFilter === 'all') params.delete('categoria');
-    else params.set('categoria', activeFilter);
-    if (activeTag) params.set('tag', activeTag);
-    else params.delete('tag');
-    const query = params.toString();
-    window.history.replaceState({}, '', `${window.location.pathname}${query ? `?${query}` : ''}`);
-  }
-
-  // Set initial active state and count
-  const activeChip = Array.from(filterChips).find((c) => c.dataset.filter === activeFilter);
-  if (activeChip) {
-    filterChips.forEach((c) => c.classList.remove('active'));
-    activeChip.classList.add('active');
-  }
-  const activeTagChip = Array.from(tagChips).find((chip) => chip.dataset.tag === activeTag);
-  if (activeTagChip) {
-    activeTagChip.classList.add('active');
-    activeTagChip.setAttribute('aria-pressed', 'true');
-  }
-  filterProjects();
+    // Set initial active state and count
+    const activeChip = Array.from(filterChips).find((c) => c.dataset.filter === activeFilter);
+    if (activeChip) {
+      filterChips.forEach((c) => c.classList.remove('active'));
+      activeChip.classList.add('active');
+    }
+    const activeTagChip = Array.from(tagChips).find((chip) => chip.dataset.tag === activeTag);
+    if (activeTagChip) {
+      activeTagChip.classList.add('active');
+      activeTagChip.setAttribute('aria-pressed', 'true');
+    }
+    filterProjects();
+  });
 </script>
 
 <style is:global>
