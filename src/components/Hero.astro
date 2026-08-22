@@ -1,6 +1,9 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
 export interface Props {
-  featuredImage: string;
+  featuredImage: ImageMetadata | string;
   featuredTitle: string;
   featuredSlug: string;
   featuredSoftware?: string;
@@ -12,10 +15,10 @@ const baseUrl = import.meta.env.BASE_URL;
 ---
 
 <section class="relative pt-28 sm:pt-32 pb-16 sm:pb-24 overflow-hidden">
-  <div class="absolute inset-0 bg-gradient-to-b from-brand-50/60 via-white to-white pointer-events-none" />
+  <div class="absolute inset-0 bg-gradient-to-b from-brand-50/60 via-white to-white dark:from-brand-950/20 dark:via-surface-950 dark:to-surface-950 pointer-events-none" />
 
   <svg
-    class="absolute inset-0 w-full h-full opacity-[0.05] pointer-events-none"
+    class="absolute inset-0 w-full h-full opacity-[0.05] dark:opacity-[0.1] pointer-events-none"
     xmlns="http://www.w3.org/2000/svg"
     aria-hidden="true"
   >
@@ -41,24 +44,24 @@ const baseUrl = import.meta.env.BASE_URL;
     <rect width="100%" height="100%" fill="url(#pcb-trace)" />
   </svg>
 
-  <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-brand-100/40 to-transparent rounded-full blur-3xl pointer-events-none" />
-  <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-amber-100/20 to-transparent rounded-full blur-3xl pointer-events-none" />
+  <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-brand-100/40 dark:from-brand-600/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+  <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-amber-100/20 dark:from-amber-500/10 to-transparent rounded-full blur-3xl pointer-events-none" />
 
   <div class="container-wide relative">
     <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
       <div>
-        <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-50 border border-brand-200 rounded-full text-sm font-medium text-brand-700 mb-6">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-50 dark:bg-brand-950/40 border border-brand-200 dark:border-brand-800/60 rounded-full text-sm font-medium text-brand-700 dark:text-brand-300 mb-6">
           <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse" />
           Ingeniero Electrónico · Diseñador PCB
         </div>
 
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-surface-900 leading-[1.1] mb-6">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-surface-900 dark:text-white leading-[1.1] mb-6">
           Diseño y Fabricación
-          <span class="text-brand-600">Profesional</span>
+          <span class="text-brand-600 dark:text-brand-400">Profesional</span>
           <br />de Circuitos Impresos
         </h1>
 
-        <p class="text-lg sm:text-xl text-surface-600 leading-relaxed max-w-2xl mb-8">
+        <p class="text-lg sm:text-xl text-surface-600 dark:text-surface-300 leading-relaxed max-w-2xl mb-8">
           Más de 20 proyectos documentados. Desde PCBs artesanales hasta
           fabricación profesional. Cada placa cuenta una historia de ingeniería,
           precisión y dedicación.
@@ -67,7 +70,7 @@ const baseUrl = import.meta.env.BASE_URL;
         <div class="flex flex-col sm:flex-row gap-4">
           <a
             href={`${baseUrl}#proyectos`}
-            class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-surface-900 text-white font-medium rounded-xl hover:bg-surface-800 transition-all duration-200 active:scale-[0.98]"
+            class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-surface-900 dark:bg-brand-500 text-white dark:text-surface-950 font-medium rounded-xl hover:bg-surface-800 dark:hover:bg-brand-400 transition-all duration-200 active:scale-[0.98] shadow-md shadow-surface-950/10 dark:shadow-brand-500/20"
           >
             Ver Proyectos
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -76,7 +79,7 @@ const baseUrl = import.meta.env.BASE_URL;
           </a>
           <a
             href={`${baseUrl}contacto`}
-            class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-surface-100 text-surface-700 font-medium rounded-xl hover:bg-surface-200 transition-all duration-200 active:scale-[0.98]"
+            class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-surface-100 dark:bg-surface-800 text-surface-700 dark:text-surface-200 border border-transparent dark:border-surface-700 font-medium rounded-xl hover:bg-surface-200 dark:hover:bg-surface-700 transition-all duration-200 active:scale-[0.98]"
           >
             Solicitar Presupuesto
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -85,42 +88,54 @@ const baseUrl = import.meta.env.BASE_URL;
           </a>
         </div>
 
-        <div class="flex items-center gap-8 mt-10 pt-10 border-t border-surface-200">
+        <div class="flex items-center gap-8 mt-10 pt-10 border-t border-surface-200 dark:border-surface-800">
           <div class="flex -space-x-2">
-            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 border-2 border-white flex items-center justify-center text-xs font-bold text-white shadow-sm">
+            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 border-2 border-white dark:border-surface-900 flex items-center justify-center text-xs font-bold text-white shadow-sm">
               K
             </div>
-            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 border-2 border-white flex items-center justify-center text-xs font-bold text-white shadow-sm">
+            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 border-2 border-white dark:border-surface-900 flex items-center justify-center text-xs font-bold text-white shadow-sm">
               A
             </div>
-            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-sky-400 to-sky-600 border-2 border-white flex items-center justify-center text-xs font-bold text-white shadow-sm">
+            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-sky-400 to-sky-600 border-2 border-white dark:border-surface-900 flex items-center justify-center text-xs font-bold text-white shadow-sm">
               E
             </div>
-            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 border-2 border-white flex items-center justify-center text-xs font-bold text-white shadow-sm">
+            <div class="w-9 h-9 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 border-2 border-white dark:border-surface-900 flex items-center justify-center text-xs font-bold text-white shadow-sm">
               N
             </div>
           </div>
           <div>
-            <p class="text-sm font-semibold text-surface-900">+20 Proyectos Completados</p>
-            <p class="text-sm text-surface-500">Artesanales y profesionales</p>
+            <p class="text-sm font-semibold text-surface-900 dark:text-white">+20 Proyectos Completados</p>
+            <p class="text-sm text-surface-500 dark:text-surface-400">Artesanales y profesionales</p>
           </div>
         </div>
       </div>
 
       <div class="relative lg:block">
-        <div class="absolute -inset-4 bg-gradient-to-tr from-brand-200/40 via-transparent to-amber-100/40 rounded-3xl blur-2xl pointer-events-none" />
+        <div class="absolute -inset-4 bg-gradient-to-tr from-brand-200/40 dark:from-brand-600/20 via-transparent to-amber-100/40 dark:to-amber-500/10 rounded-3xl blur-2xl pointer-events-none" />
         <a
           href={`${baseUrl}proyectos/${featuredSlug}/`}
-          class="group relative block rounded-3xl overflow-hidden bg-surface-100 border border-surface-200 shadow-xl hover:shadow-2xl transition-all duration-500"
+          class="group relative block rounded-3xl overflow-hidden bg-surface-100 dark:bg-surface-800 border border-surface-200 dark:border-surface-700 shadow-xl hover:shadow-2xl transition-all duration-500"
         >
-          <img
-            src={featuredImage}
-            alt={featuredTitle}
-            class="w-full aspect-[4/3] object-cover transition-all duration-700 group-hover:scale-105"
-            fetchpriority="high"
-            decoding="async"
-          />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+          {typeof featuredImage === 'object' ? (
+            <Image
+              src={featuredImage}
+              alt={featuredTitle}
+              width={800}
+              height={600}
+              class="w-full aspect-[4/3] object-cover transition-all duration-700 group-hover:scale-105"
+              fetchpriority="high"
+              loading="eager"
+            />
+          ) : (
+            <img
+              src={featuredImage}
+              alt={featuredTitle}
+              class="w-full aspect-[4/3] object-cover transition-all duration-700 group-hover:scale-105"
+              fetchpriority="high"
+              decoding="async"
+            />
+          )}
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
           <div class="absolute bottom-0 inset-x-0 p-6">
             <p class="text-xs font-medium text-white/70 uppercase tracking-wider mb-1">Proyecto reciente</p>
             <div class="flex items-center justify-between gap-3">
@@ -135,13 +150,13 @@ const baseUrl = import.meta.env.BASE_URL;
           </div>
         </a>
 
-        <div class="absolute -top-4 -left-4 bg-white rounded-2xl border border-surface-200 shadow-lg px-4 py-3 hidden sm:block">
-          <p class="text-2xl font-bold text-brand-600 leading-none mb-1">{featuredSoftware}</p>
-          <p class="text-xs text-surface-500">Software de diseño</p>
+        <div class="absolute -top-4 -left-4 bg-white dark:bg-surface-900 rounded-2xl border border-surface-200 dark:border-surface-700 shadow-lg px-4 py-3 hidden sm:block">
+          <p class="text-2xl font-bold text-brand-600 dark:text-brand-400 leading-none mb-1">{featuredSoftware}</p>
+          <p class="text-xs text-surface-500 dark:text-surface-400">Software de diseño</p>
         </div>
-        <div class="absolute -bottom-4 -right-4 bg-white rounded-2xl border border-surface-200 shadow-lg px-4 py-3 hidden sm:block">
-          <p class="text-2xl font-bold text-surface-900 leading-none mb-1">{featuredLayers}</p>
-          <p class="text-xs text-surface-500">Capas de PCB</p>
+        <div class="absolute -bottom-4 -right-4 bg-white dark:bg-surface-900 rounded-2xl border border-surface-200 dark:border-surface-700 shadow-lg px-4 py-3 hidden sm:block">
+          <p class="text-2xl font-bold text-surface-900 dark:text-white leading-none mb-1">{featuredLayers}</p>
+          <p class="text-xs text-surface-500 dark:text-surface-400">Capas de PCB</p>
         </div>
       </div>
     </div>

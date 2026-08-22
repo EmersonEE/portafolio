@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
 
 export interface Props {
   project: CollectionEntry<'proyectos'>;
@@ -8,8 +9,6 @@ export interface Props {
 const { project } = Astro.props;
 const { data } = project;
 const baseUrl = import.meta.env.BASE_URL;
-
-const withBase = (src: string) => `${baseUrl}${src.replace(/^\//, '')}`;
 
 const categoryLabels: Record<string, string> = {
   artesanal: 'Artesanal',
@@ -24,16 +23,16 @@ const categoryLabels: Record<string, string> = {
 <section class="container-wide py-16 sm:py-20">
   <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
     <div>
-      <p class="text-sm font-semibold text-brand-600 uppercase tracking-wider mb-2">
+      <p class="text-sm font-semibold text-brand-600 dark:text-brand-400 uppercase tracking-wider mb-2">
         Proyecto Destacado
       </p>
-      <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">
+      <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-surface-900 dark:text-white">
         {data.title}
       </h2>
     </div>
     <a
       href={`${baseUrl}proyectos/${project.slug}/`}
-      class="inline-flex items-center gap-2 text-sm font-medium text-brand-600 hover:text-brand-700 transition-colors shrink-0"
+      class="inline-flex items-center gap-2 text-sm font-medium text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300 transition-colors shrink-0"
     >
       Ver proyecto completo
       <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -46,12 +45,14 @@ const categoryLabels: Record<string, string> = {
     <div class="lg:col-span-3">
       <a
         href={`${baseUrl}proyectos/${project.slug}/`}
-        class="group block rounded-3xl overflow-hidden bg-surface-100 border border-surface-200 shadow-md hover:shadow-xl transition-all duration-500"
+        class="group block rounded-3xl overflow-hidden bg-surface-100 dark:bg-surface-800 border border-surface-200 dark:border-surface-700 shadow-md hover:shadow-xl transition-all duration-500"
       >
         <div class="relative aspect-[4/3] overflow-hidden">
-          <img
-            src={withBase(data.featuredImage)}
+          <Image
+            src={data.featuredImage}
             alt={data.title}
+            width={800}
+            height={600}
             class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
           />
           <div class="absolute top-4 left-4">
@@ -64,13 +65,17 @@ const categoryLabels: Record<string, string> = {
         <div class="grid grid-cols-4 gap-3 mt-4" id="featured-gallery">
           {data.images.slice(0, 4).map((img) => (
             <a
-              href={withBase(img.src)}
-              class="group block rounded-xl overflow-hidden bg-surface-100 border border-surface-200"
+              href={img.src.src}
+              class="group block rounded-xl overflow-hidden bg-surface-100 dark:bg-surface-800 border border-surface-200 dark:border-surface-700"
               data-caption={img.alt}
+              data-pswp-width={img.src.width}
+              data-pswp-height={img.src.height}
             >
-              <img
-                src={withBase(img.src)}
+              <Image
+                src={img.src}
                 alt={img.alt}
+                width={300}
+                height={300}
                 loading="lazy"
                 class="w-full aspect-square object-cover transition-all duration-500 group-hover:scale-110"
               />
@@ -81,27 +86,27 @@ const categoryLabels: Record<string, string> = {
     </div>
 
     <div class="lg:col-span-2 lg:pt-2">
-      <p class="text-lg text-surface-600 leading-relaxed mb-6">
+      <p class="text-lg text-surface-600 dark:text-surface-300 leading-relaxed mb-6">
         {data.description}
       </p>
 
       <dl class="grid grid-cols-2 gap-4 mb-6">
-        <div class="p-4 rounded-xl bg-surface-50 border border-surface-200">
-          <dt class="text-xs font-medium text-surface-500 uppercase tracking-wider mb-1">Capas</dt>
-          <dd class="font-semibold">{data.specifications.layers}</dd>
+        <div class="p-4 rounded-xl bg-surface-50 dark:bg-surface-900/60 border border-surface-200 dark:border-surface-800">
+          <dt class="text-xs font-medium text-surface-500 dark:text-surface-400 uppercase tracking-wider mb-1">Capas</dt>
+          <dd class="font-semibold text-surface-900 dark:text-white">{data.specifications.layers}</dd>
         </div>
-        <div class="p-4 rounded-xl bg-surface-50 border border-surface-200">
-          <dt class="text-xs font-medium text-surface-500 uppercase tracking-wider mb-1">Tipo</dt>
-          <dd class="font-semibold">{data.specifications.type}</dd>
+        <div class="p-4 rounded-xl bg-surface-50 dark:bg-surface-900/60 border border-surface-200 dark:border-surface-800">
+          <dt class="text-xs font-medium text-surface-500 dark:text-surface-400 uppercase tracking-wider mb-1">Tipo</dt>
+          <dd class="font-semibold text-surface-900 dark:text-white">{data.specifications.type}</dd>
         </div>
-        <div class="p-4 rounded-xl bg-surface-50 border border-surface-200">
-          <dt class="text-xs font-medium text-surface-500 uppercase tracking-wider mb-1">Software</dt>
-          <dd class="font-semibold">{data.specifications.software}</dd>
+        <div class="p-4 rounded-xl bg-surface-50 dark:bg-surface-900/60 border border-surface-200 dark:border-surface-800">
+          <dt class="text-xs font-medium text-surface-500 dark:text-surface-400 uppercase tracking-wider mb-1">Software</dt>
+          <dd class="font-semibold text-surface-900 dark:text-white">{data.specifications.software}</dd>
         </div>
         {data.specifications.microcontroller && (
-          <div class="p-4 rounded-xl bg-surface-50 border border-surface-200">
-            <dt class="text-xs font-medium text-surface-500 uppercase tracking-wider mb-1">Microcontrolador</dt>
-            <dd class="font-semibold">{data.specifications.microcontroller}</dd>
+          <div class="p-4 rounded-xl bg-surface-50 dark:bg-surface-900/60 border border-surface-200 dark:border-surface-800">
+            <dt class="text-xs font-medium text-surface-500 dark:text-surface-400 uppercase tracking-wider mb-1">Microcontrolador</dt>
+            <dd class="font-semibold text-surface-900 dark:text-white">{data.specifications.microcontroller}</dd>
           </div>
         )}
       </dl>
@@ -109,7 +114,7 @@ const categoryLabels: Record<string, string> = {
       {data.technologies && data.technologies.length > 0 && (
         <div class="flex flex-wrap gap-2 mb-8">
           {data.technologies.map((tech) => (
-            <span class="px-3 py-1.5 bg-surface-100 text-surface-700 rounded-full text-sm font-medium">
+            <span class="px-3 py-1.5 bg-surface-100 dark:bg-surface-800 text-surface-700 dark:text-surface-300 rounded-full text-sm font-medium">
               {tech}
             </span>
           ))}
@@ -118,7 +123,7 @@ const categoryLabels: Record<string, string> = {
 
       <a
         href={`${baseUrl}proyectos/${project.slug}/`}
-        class="inline-flex items-center gap-2 px-6 py-3 bg-brand-600 text-white font-medium rounded-xl hover:bg-brand-700 transition-all duration-200 active:scale-[0.98]"
+        class="inline-flex items-center gap-2 px-6 py-3 bg-brand-600 hover:bg-brand-700 dark:bg-brand-500 dark:hover:bg-brand-400 text-white dark:text-surface-950 font-medium rounded-xl transition-all duration-200 active:scale-[0.98] shadow-md shadow-brand-500/20"
       >
         Explorar este proyecto
         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

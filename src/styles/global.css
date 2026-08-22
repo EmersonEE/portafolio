@@ -12,12 +12,16 @@
   }
 
   body {
-    @apply bg-white text-surface-900 font-sans;
+    @apply bg-white text-surface-900 font-sans transition-colors duration-300 dark:bg-surface-950 dark:text-surface-100;
     background-image: linear-gradient(to bottom, rgba(248, 250, 252, 0.5), transparent 28rem);
   }
 
+  html.dark body {
+    background-image: linear-gradient(to bottom, rgba(13, 17, 23, 0.9), transparent 28rem);
+  }
+
   ::selection {
-    @apply bg-brand-500/20 text-brand-800;
+    @apply bg-brand-500/20 text-brand-800 dark:bg-brand-500/30 dark:text-brand-200;
   }
 
   :focus-visible {
@@ -48,61 +52,92 @@
   }
 
   .glass {
-    @apply bg-white/75 backdrop-blur-xl border-b border-surface-200/80;
-    transition: box-shadow 300ms ease, background-color 300ms ease;
+    @apply bg-white/75 backdrop-blur-xl border-b border-surface-200/80 transition-all duration-300 dark:bg-surface-950/75 dark:border-surface-800/80;
   }
 
   .glass.is-scrolled {
-    @apply bg-white/95 shadow-sm;
+    @apply bg-white/95 shadow-sm dark:bg-surface-950/95 dark:shadow-surface-950/50;
   }
 
   .badge {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium transition-colors;
   }
 
   .badge-artesanal {
-    @apply badge bg-amber-50 text-amber-800 border border-amber-200;
+    @apply badge bg-amber-50 text-amber-800 border border-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-800/50;
   }
 
   .badge-profesional {
-    @apply badge bg-blue-50 text-blue-800 border border-blue-200;
+    @apply badge bg-blue-50 text-blue-800 border border-blue-200 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-800/50;
   }
 
   .badge-personal {
-    @apply badge bg-purple-50 text-purple-800 border border-purple-200;
+    @apply badge bg-purple-50 text-purple-800 border border-purple-200 dark:bg-purple-950/40 dark:text-purple-300 dark:border-purple-800/50;
   }
 
   .badge-cliente {
-    @apply badge bg-emerald-50 text-emerald-800 border border-emerald-200;
+    @apply badge bg-emerald-50 text-emerald-800 border border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800/50;
   }
 
   .badge-universitario {
-    @apply badge bg-rose-50 text-rose-800 border border-rose-200;
+    @apply badge bg-rose-50 text-rose-800 border border-rose-200 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-800/50;
   }
 
   .badge-prototipo {
-    @apply badge bg-cyan-50 text-cyan-800 border border-cyan-200;
+    @apply badge bg-cyan-50 text-cyan-800 border border-cyan-200 dark:bg-cyan-950/40 dark:text-cyan-300 dark:border-cyan-800/50;
   }
 
   .badge-completado {
-    @apply badge bg-emerald-50 text-emerald-700 border-emerald-200;
+    @apply badge bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800/50;
   }
 
   .badge-en-progreso {
-    @apply badge bg-amber-50 text-amber-700 border-amber-200;
+    @apply badge bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-800/50;
   }
 
   .badge-pausado {
-    @apply badge bg-gray-50 text-gray-600 border-gray-200;
+    @apply badge bg-gray-50 text-gray-600 border-gray-200 dark:bg-gray-900/60 dark:text-gray-400 dark:border-gray-800;
   }
 
   .eyebrow {
-    @apply inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-700;
+    @apply inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-700 dark:text-brand-400;
   }
 
   .eyebrow::before {
     content: '';
-    @apply h-px w-8 bg-brand-500;
+    @apply h-px w-8 bg-brand-500 dark:bg-brand-400;
+  }
+
+  /* Prose dark styling */
+  .prose {
+    @apply text-surface-700 dark:text-surface-300;
+  }
+  .prose h1, .prose h2, .prose h3, .prose h4 {
+    @apply text-surface-900 dark:text-white font-bold tracking-tight;
+  }
+  .prose p {
+    @apply leading-relaxed mb-4 text-surface-600 dark:text-surface-300;
+  }
+  .prose strong {
+    @apply text-surface-900 dark:text-white font-semibold;
+  }
+  .prose a {
+    @apply text-brand-600 dark:text-brand-400 hover:underline;
+  }
+  .prose code {
+    @apply font-mono text-sm px-1.5 py-0.5 rounded bg-surface-100 text-surface-800 dark:bg-surface-800 dark:text-surface-200;
+  }
+  .prose pre {
+    @apply p-4 rounded-xl bg-surface-900 text-surface-100 overflow-x-auto dark:bg-surface-900 dark:border dark:border-surface-800;
+  }
+  .prose ul, .prose ol {
+    @apply my-4 pl-6 space-y-2;
+  }
+  .prose ul {
+    @apply list-disc;
+  }
+  .prose ol {
+    @apply list-decimal;
   }
 }
 

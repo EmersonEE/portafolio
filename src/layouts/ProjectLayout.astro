@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
 
 export interface Props {
   project: CollectionEntry<'proyectos'>;
@@ -20,7 +21,7 @@ const categoryLabels: Record<string, string> = {
 };
 
 const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
-const imageUrl = new URL(`${baseUrl}${data.featuredImage.replace(/^\//, '')}`, Astro.site).href;
+const imageUrl = new URL(data.featuredImage.src, Astro.site).href;
 const projectSchema = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'CreativeWork',
@@ -43,13 +44,13 @@ const projectSchema = JSON.stringify({
 >
   <article class="container-narrow py-16 lg:py-24">
     <header class="mb-12">
-      <nav aria-label="Migas de pan" class="mb-6 text-sm text-surface-500">
+      <nav aria-label="Migas de pan" class="mb-6 text-sm text-surface-500 dark:text-surface-400">
         <ol class="flex flex-wrap items-center gap-2">
-          <li><a href={`${baseUrl}`} class="hover:text-brand-600 transition-colors">Inicio</a></li>
+          <li><a href={`${baseUrl}`} class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Inicio</a></li>
           <li aria-hidden="true">/</li>
-          <li><a href={`${baseUrl}#proyectos`} class="hover:text-brand-600 transition-colors">Proyectos</a></li>
+          <li><a href={`${baseUrl}#proyectos`} class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Proyectos</a></li>
           <li aria-hidden="true">/</li>
-          <li aria-current="page" class="text-surface-700">{data.title}</li>
+          <li aria-current="page" class="text-surface-700 dark:text-surface-200 font-medium">{data.title}</li>
         </ol>
       </nav>
       <div class="flex flex-wrap items-center gap-3 mb-4">
@@ -59,15 +60,15 @@ const projectSchema = JSON.stringify({
         <span class={`badge-${data.status}`}>
           {data.status === 'completado' ? 'Completado' : data.status === 'en-progreso' ? 'En Progreso' : 'Pausado'}
         </span>
-        <time class="text-sm text-surface-500" datetime={data.date}>
+        <time class="text-sm text-surface-500 dark:text-surface-400" datetime={data.date}>
           {new Date(data.date).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}
         </time>
       </div>
 
-      <h1 class="text-4xl sm:text-5xl font-bold tracking-tight mb-4">
+      <h1 class="text-4xl sm:text-5xl font-bold tracking-tight text-surface-900 dark:text-white mb-4">
         {data.title}
       </h1>
-      <p class="text-xl text-surface-600 leading-relaxed max-w-3xl">
+      <p class="text-xl text-surface-600 dark:text-surface-300 leading-relaxed max-w-3xl">
         {data.description}
       </p>
     </header>
@@ -75,29 +76,29 @@ const projectSchema = JSON.stringify({
     <script is:inline type="application/ld+json" set:html={projectSchema} />
 
     <section class="mb-16">
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 p-6 bg-surface-50 rounded-2xl">
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 p-6 bg-surface-50 dark:bg-surface-900/60 border border-surface-200/60 dark:border-surface-800 rounded-2xl">
         <div>
-          <p class="text-xs font-medium text-surface-500 uppercase tracking-wider mb-1">Capas</p>
-          <p class="font-semibold">{data.specifications.layers}</p>
+          <p class="text-xs font-medium text-surface-500 dark:text-surface-400 uppercase tracking-wider mb-1">Capas</p>
+          <p class="font-semibold text-surface-900 dark:text-white">{data.specifications.layers}</p>
         </div>
         <div>
-          <p class="text-xs font-medium text-surface-500 uppercase tracking-wider mb-1">Tipo</p>
-          <p class="font-semibold">{data.specifications.type}</p>
+          <p class="text-xs font-medium text-surface-500 dark:text-surface-400 uppercase tracking-wider mb-1">Tipo</p>
+          <p class="font-semibold text-surface-900 dark:text-white">{data.specifications.type}</p>
         </div>
         <div>
-          <p class="text-xs font-medium text-surface-500 uppercase tracking-wider mb-1">Software</p>
-          <p class="font-semibold">{data.specifications.software}</p>
+          <p class="text-xs font-medium text-surface-500 dark:text-surface-400 uppercase tracking-wider mb-1">Software</p>
+          <p class="font-semibold text-surface-900 dark:text-white">{data.specifications.software}</p>
         </div>
         {data.specifications.microcontroller && (
           <div>
-            <p class="text-xs font-medium text-surface-500 uppercase tracking-wider mb-1">Microcontrolador</p>
-            <p class="font-semibold">{data.specifications.microcontroller}</p>
+            <p class="text-xs font-medium text-surface-500 dark:text-surface-400 uppercase tracking-wider mb-1">Microcontrolador</p>
+            <p class="font-semibold text-surface-900 dark:text-white">{data.specifications.microcontroller}</p>
           </div>
         )}
         {data.client && (
           <div>
-            <p class="text-xs font-medium text-surface-500 uppercase tracking-wider mb-1">Cliente</p>
-            <p class="font-semibold">{data.client}</p>
+            <p class="text-xs font-medium text-surface-500 dark:text-surface-400 uppercase tracking-wider mb-1">Cliente</p>
+            <p class="font-semibold text-surface-900 dark:text-white">{data.client}</p>
           </div>
         )}
       </div>
@@ -109,22 +110,22 @@ const projectSchema = JSON.stringify({
 
     {data.objective && (
       <section class="mb-16">
-        <h2 class="text-2xl font-bold mb-4">Objetivo</h2>
-        <p class="text-surface-700 leading-relaxed">{data.objective}</p>
+        <h2 class="text-2xl font-bold text-surface-900 dark:text-white mb-4">Objetivo</h2>
+        <p class="text-surface-700 dark:text-surface-300 leading-relaxed">{data.objective}</p>
       </section>
     )}
 
     {data.images && data.images.length > 0 && (
       <section class="mb-16" id="galeria">
-        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-2">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-4">
           <div>
-            <h2 class="text-2xl font-bold">Galería del Proceso</h2>
-            <p class="text-surface-500 text-sm mt-1">{data.images.length} imágenes documentadas</p>
+            <h2 class="text-2xl font-bold text-surface-900 dark:text-white">Galería del Proceso</h2>
+            <p class="text-surface-500 dark:text-surface-400 text-sm mt-1">{data.images.length} imágenes documentadas</p>
           </div>
         </div>
 
         <div class="flex flex-wrap gap-2 mb-6" id="phase-filters">
-          <button aria-pressed="true" class="phase-filter px-3.5 py-2 text-sm font-medium rounded-xl border transition-all duration-200" data-phase="all">
+          <button aria-pressed="true" class="phase-filter active px-3.5 py-2 text-sm font-medium rounded-xl border transition-all duration-200" data-phase="all">
             Todas
           </button>
           <button aria-pressed="false" class="phase-filter px-3.5 py-2 text-sm font-medium rounded-xl border transition-all duration-200" data-phase="diseno">
@@ -144,18 +145,19 @@ const projectSchema = JSON.stringify({
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4" id="gallery">
           {data.images.map((img, i) => (
             <a
-              href={`${baseUrl}${img.src.replace(/^\//, '')}`}
-              class="group block rounded-xl overflow-hidden bg-surface-100 cursor-pointer gallery-item"
+              href={img.src.src}
+              class="group block rounded-xl overflow-hidden bg-surface-100 dark:bg-surface-800 border border-surface-200/80 dark:border-surface-700 cursor-pointer gallery-item"
               data-phase={img.phase}
               data-caption={img.alt}
-              data-pswp-width="1600"
-              data-pswp-height="1200"
+              data-pswp-width={img.src.width}
+              data-pswp-height={img.src.height}
             >
-              <img
-                src={`${baseUrl}${img.src.replace(/^\//, '')}`}
+              <Image
+                src={img.src}
                 alt={img.alt}
-                class="w-full block"
-                style="display: block; width: 100%; height: auto;"
+                width={600}
+                height={450}
+                class="w-full h-auto block transition-transform duration-500 group-hover:scale-105"
                 loading={i < 3 ? 'eager' : 'lazy'}
                 decoding="async"
               />
@@ -226,21 +228,15 @@ const projectSchema = JSON.stringify({
         if (!phaseFilters.length) return;
 
         phaseFilters.forEach((btn) => {
-          btn.classList.add(
-            'border-surface-200', 'text-surface-600',
-            'hover:border-brand-300', 'hover:text-brand-700', 'hover:bg-brand-50',
-            'cursor-pointer'
-          );
           btn.addEventListener('click', () => {
             phaseFilters.forEach((b) => {
-              b.classList.remove('bg-brand-50', 'border-brand-300', 'text-brand-700');
-              b.classList.add('border-surface-200', 'text-surface-600');
+              b.classList.remove('active');
+              b.setAttribute('aria-pressed', 'false');
             });
-            btn.classList.remove('border-surface-200', 'text-surface-600');
-            btn.classList.add('bg-brand-50', 'border-brand-300', 'text-brand-700');
+            btn.classList.add('active');
+            btn.setAttribute('aria-pressed', 'true');
 
             const phase = btn.dataset.phase;
-            phaseFilters.forEach((b) => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
             galleryItems.forEach((item) => {
               if (phase === 'all' || item.dataset.phase === phase) {
                 item.style.display = '';
@@ -250,28 +246,30 @@ const projectSchema = JSON.stringify({
             });
           });
         });
-
-        const activeFilter = document.querySelector('.phase-filter[data-phase="all"]');
-        if (activeFilter) {
-          activeFilter.classList.remove('border-surface-200', 'text-surface-600');
-            activeFilter.classList.add('bg-brand-50', 'border-brand-300', 'text-brand-700');
-            activeFilter.setAttribute('aria-pressed', 'true');
-        }
       })();
     </script>
 
+    <style is:global>
+      .phase-filter {
+        @apply border-surface-200 dark:border-surface-800 text-surface-600 dark:text-surface-300 hover:border-brand-300 dark:hover:border-brand-600 hover:text-brand-700 dark:hover:text-brand-300 hover:bg-brand-50 dark:hover:bg-brand-950/40 cursor-pointer;
+      }
+      .phase-filter.active {
+        @apply bg-brand-50 dark:bg-brand-950/60 border-brand-300 dark:border-brand-700 text-brand-700 dark:text-brand-300;
+      }
+    </style>
+
     {data.beforeAfter && (
       <section class="mb-16">
-        <h2 class="text-2xl font-bold mb-6">Comparación</h2>
-        <div class="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-surface-100" id="image-compare">
+        <h2 class="text-2xl font-bold text-surface-900 dark:text-white mb-6">Comparación</h2>
+        <div class="relative w-full aspect-[16/10] rounded-2xl overflow-hidden bg-surface-100 dark:bg-surface-800 border border-surface-200 dark:border-surface-700" id="image-compare">
           <img
-            src={`${baseUrl}${data.beforeAfter.before.replace(/^\//, '')}`}
+            src={data.beforeAfter.before.src}
             alt="Antes"
             class="absolute inset-0 w-full h-full object-cover"
           />
           <div class="absolute inset-0 w-1/2 overflow-hidden" id="compare-after">
             <img
-              src={`${baseUrl}${data.beforeAfter.after.replace(/^\//, '')}`}
+              src={data.beforeAfter.after.src}
               alt="Después"
               class="absolute inset-0 w-full h-full object-cover"
               style="width: 200%"
@@ -282,10 +280,10 @@ const projectSchema = JSON.stringify({
             min="0"
             max="100"
             value="50"
-             class="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-10"
-             id="compare-slider"
-             aria-label="Comparar imágenes antes y después"
-             aria-valuetext="50% de comparación"
+            class="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-10"
+            id="compare-slider"
+            aria-label="Comparar imágenes antes y después"
+            aria-valuetext="50% de comparación"
           />
           <div
             class="absolute top-0 bottom-0 w-0.5 bg-white shadow-lg z-[5]"
@@ -301,13 +299,13 @@ const projectSchema = JSON.stringify({
           </div>
           {data.beforeAfter.label && (
             <>
-               <span class="absolute bottom-4 left-4 px-2 py-1 bg-black/60 text-white text-xs rounded z-[5]">{data.beforeAfter.label || 'Antes'}</span>
-               <span class="absolute bottom-4 right-4 px-2 py-1 bg-black/60 text-white text-xs rounded z-[5]">Después</span>
+              <span class="absolute bottom-4 left-4 px-2 py-1 bg-black/60 text-white text-xs rounded z-[5]">{data.beforeAfter.label || 'Antes'}</span>
+              <span class="absolute bottom-4 right-4 px-2 py-1 bg-black/60 text-white text-xs rounded z-[5]">Después</span>
             </>
           )}
         </div>
         <script>
-           const slider = document.getElementById('compare-slider') as HTMLInputElement | null;
+          const slider = document.getElementById('compare-slider') as HTMLInputElement | null;
           const afterEl = document.getElementById('compare-after');
           const lineEl = document.getElementById('compare-line');
 
@@ -327,33 +325,33 @@ const projectSchema = JSON.stringify({
 
     {data.challenges && (
       <section class="mb-8">
-        <h2 class="text-2xl font-bold mb-4">Retos</h2>
-        <p class="text-surface-700 leading-relaxed">{data.challenges}</p>
+        <h2 class="text-2xl font-bold text-surface-900 dark:text-white mb-4">Retos</h2>
+        <p class="text-surface-700 dark:text-surface-300 leading-relaxed">{data.challenges}</p>
       </section>
     )}
 
     {data.solutions && (
       <section class="mb-16">
-        <h2 class="text-2xl font-bold mb-4">Soluciones</h2>
-        <p class="text-surface-700 leading-relaxed">{data.solutions}</p>
+        <h2 class="text-2xl font-bold text-surface-900 dark:text-white mb-4">Soluciones</h2>
+        <p class="text-surface-700 dark:text-surface-300 leading-relaxed">{data.solutions}</p>
       </section>
     )}
 
     {data.timeframe && (
-      <div class="flex items-center gap-2 text-surface-600 mb-8">
-        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <div class="flex items-center gap-2 text-surface-600 dark:text-surface-300 mb-8">
+        <svg class="w-5 h-5 text-brand-600 dark:text-brand-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <span>Tiempo de fabricación: <strong class="text-surface-900">{data.timeframe}</strong></span>
+        <span>Tiempo de fabricación: <strong class="text-surface-900 dark:text-white">{data.timeframe}</strong></span>
       </div>
     )}
 
     {data.technologies && data.technologies.length > 0 && (
       <section class="mb-16">
-        <h2 class="text-2xl font-bold mb-4">Tecnologías</h2>
+        <h2 class="text-2xl font-bold text-surface-900 dark:text-white mb-4">Tecnologías</h2>
         <div class="flex flex-wrap gap-2">
           {data.technologies.map((tech) => (
-            <span class="px-3 py-1.5 bg-surface-100 text-surface-700 rounded-full text-sm font-medium">
+            <span class="px-3 py-1.5 bg-surface-100 dark:bg-surface-800 text-surface-700 dark:text-surface-300 rounded-full text-sm font-medium">
               {tech}
             </span>
           ))}
@@ -363,12 +361,12 @@ const projectSchema = JSON.stringify({
 
     {data.tags && data.tags.length > 0 && (
       <section class="mb-16">
-        <h2 class="text-2xl font-bold mb-4">Etiquetas</h2>
+        <h2 class="text-2xl font-bold text-surface-900 dark:text-white mb-4">Etiquetas</h2>
         <div class="flex flex-wrap gap-2">
           {data.tags.map((tag) => (
             <a
               href={`${baseUrl}?tag=${encodeURIComponent(tag)}`}
-              class="px-3 py-1.5 bg-brand-50 text-brand-700 rounded-full text-sm font-medium hover:bg-brand-100 transition-colors"
+              class="px-3 py-1.5 bg-brand-50 dark:bg-brand-950/40 text-brand-700 dark:text-brand-300 border border-brand-200/60 dark:border-brand-800/60 rounded-full text-sm font-medium hover:bg-brand-100 dark:hover:bg-brand-900/60 transition-colors"
             >
               #{tag}
             </a>
@@ -377,10 +375,10 @@ const projectSchema = JSON.stringify({
       </section>
     )}
 
-    <nav class="border-t border-surface-200 pt-8 mt-16">
+    <nav class="border-t border-surface-200 dark:border-surface-800 pt-8 mt-16">
       <a
         href={`${baseUrl}`}
-        class="inline-flex items-center gap-2 text-surface-600 hover:text-surface-900 transition-colors font-medium"
+        class="inline-flex items-center gap-2 text-surface-600 hover:text-surface-900 dark:text-surface-400 dark:hover:text-white transition-colors font-medium"
       >
         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
