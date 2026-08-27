@@ -16,6 +16,7 @@ const proyectoCollection = defineCollection({
         'prototipo',
       ]),
       status: z.enum(['completado', 'en-progreso', 'pausado']),
+      draft: z.boolean().optional(),
       client: z.string().optional(),
       featuredImage: image(),
       specifications: z.object({

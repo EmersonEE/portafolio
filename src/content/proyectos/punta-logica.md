@@ -4,6 +4,7 @@ description: "Punta lógica para diagnóstico de señales digitales con indicaci
 date: "2025-08-30"
 category: "artesanal"
 status: "completado"
+draft: true
 featuredImage: "../../assets/images/proyectos/punta-logica/3d-viever.png"
 specifications:
   layers: 2
